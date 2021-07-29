@@ -1,7 +1,10 @@
 from sqlalchemy import Column, Integer, String,DATETIME
-from data.database import Base
+
+from core.model.database import Base
 from datetime import datetime
+
 now = datetime.now()
+
 
 class DepartmentModel(Base):
     __tablename__ = 'KHOA'
@@ -10,6 +13,8 @@ class DepartmentModel(Base):
     SODT = Column(String)
     EMAIL = Column(String)
     created_at=Column(DATETIME,default=now)
+    updated_at=Column(DATETIME)
+    deleted_at=Column(DATETIME)
 
     def __repr__(self):
         return "<User(name='%s', fullname='%s', nickname='%s')>" % (self.maKhoa, self.tenKhoa, self.soDT, self.email)
