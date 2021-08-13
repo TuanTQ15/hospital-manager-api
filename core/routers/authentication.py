@@ -6,6 +6,7 @@ from core.model import models
 from ..utility.hashing import Hash
 from ..utility import token
 router = APIRouter(prefix="/api",tags=["Authentication"])
+
 @router.post('/login')
 def login(request: OAuth2PasswordRequestForm = Depends(), db : Session =Depends(get_db)):
     userPatient = db.query(models.PatientModel).filter(models.PatientModel.USERNAME==request.username).first()
@@ -16,9 +17,9 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db : Session =Depends(
         if not Hash.verify(userPatient.PASSWORD,request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
         access_token = token.create_access_token( data={"sub": userPatient.USERNAME})
-        return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": access_token,"account_role":"patient", "token_type": "bearer"}
     elif userEmployee:
         if not Hash.verify(userEmployee.PASSWORD, request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
         access_token = token.create_access_token(data={"sub": userEmployee.USERNAME})
-        return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": access_token,"account_role":"doctor", "token_type": "bearer"}
