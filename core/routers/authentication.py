@@ -5,7 +5,7 @@ from core.model.database import get_db
 from core.model import models
 from ..utility.hashing import Hash
 from ..utility import token
-router = APIRouter(tags=["Authentication"])
+router = APIRouter(prefix="/api",tags=["Authentication"])
 @router.post('/login')
 def login(request: OAuth2PasswordRequestForm = Depends(), db : Session =Depends(get_db)):
     userPatient = db.query(models.PatientModel).filter(models.PatientModel.USERNAME==request.username).first()
