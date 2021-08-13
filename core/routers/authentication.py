@@ -11,7 +11,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db : Session =Depends(
     userPatient = db.query(models.PatientModel).filter(models.PatientModel.USERNAME==request.username).first()
     userEmployee = db.query(models.EmployeeModel).filter(models.EmployeeModel.USERNAME==request.username).first()
     if not userPatient and not userEmployee:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Credentials")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Credentials")
     if userPatient:
         if not Hash.verify(userPatient.PASSWORD,request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
