@@ -19,6 +19,14 @@ driverName = 'postgresql://'
 DATABASE_URL_LOCAL = driverName + userLocal + ':' + passwordLocal + "@" + hostLocal + ':' + port + '/' + dbNameLocal
 
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL_LOCAL)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
