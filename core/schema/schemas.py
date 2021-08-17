@@ -36,7 +36,6 @@ class Employee(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     MALOAINV: str
-    USERNAME: str
     PASSWORD: str
 
 
@@ -53,9 +52,7 @@ class EmployeeShow(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     MALOAINV: str
-    USERNAME: str
     department: DepartmentShow
-
     class Config:
         orm_mode = True
 
@@ -72,7 +69,6 @@ class Patient(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
-    USERNAME: str
     PASSWORD: str
 
 
@@ -88,8 +84,6 @@ class PatientShow(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
-    USERNAME: str
-    PASSWORD: str
     class Config:
         orm_mode = True
 
