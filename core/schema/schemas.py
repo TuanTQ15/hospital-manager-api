@@ -62,7 +62,7 @@ class Patient(BaseModel):
     CMND: str
     HOTEN: str
     GIOITINH: str="Nữ"
-    NGAYSINH: datetime.date
+    NGAYSINH: int
     DIACHI: str
     DOITUONG: str
     BHYT: str
@@ -77,7 +77,7 @@ class PatientShow(BaseModel):
     CMND: str
     HOTEN: str
     GIOITINH: str
-    NGAYSINH: datetime.date
+    NGAYSINH: int
     DIACHI: str
     DOITUONG: str
     BHYT: str
