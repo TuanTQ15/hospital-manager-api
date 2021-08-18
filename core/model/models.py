@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey
+from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey,BigInteger
 from sqlalchemy.dialects.postgresql import DATE
 from sqlalchemy.orm import relationship
 
@@ -27,7 +27,7 @@ class EmployeeModel(Base):
     GIOITINH = Column(String)
     DIACHI = Column(String)
     CMND = Column(String)
-    NGAYSINH = Column(String)
+    NGAYSINH = Column(BigInteger)
     HINHANH = Column(String)
     CHUCVU = Column(String)
     SODIENTHOAI = Column(String)
@@ -45,7 +45,7 @@ class PatientModel(Base):
     HOTEN = Column(String)
     DIACHI = Column(String)
     GIOITINH = Column(String)
-    NGAYSINH = Column(String)
+    NGAYSINH = Column(BigInteger)
     HINHANH = Column(String)
     SODIENTHOAI = Column(String)
     EMAIL = Column(String)
