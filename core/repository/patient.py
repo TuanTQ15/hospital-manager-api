@@ -2,9 +2,8 @@ from core.schema.schemas import PatientShow, Patient
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from core.model.models import PatientModel
-from core.utility import hashing
+from core.utility import hashing,uploadImage
 from datetime import datetime
-
 now = datetime.now()
 
 
@@ -40,7 +39,8 @@ def update_patient(CMND, request: Patient, db: Session):
     patientObject.DIACHI = request.DIACHI
     patientObject.DOITUONG = request.DOITUONG
     patientObject.BHYT = request.BHYT
-    patientObject.HINHANH = request.HINHANH
+    patientObject.HINHANH = uploadImage.uploadFile(request.HINHANH)
+    print("hinh anh: "+request.HINHANH)
     patientObject.SODIENTHOAI = request.SODIENTHOAI
     patientObject.EMAIL = request.EMAIL
     patientObject.updated_at = now

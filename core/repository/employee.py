@@ -13,7 +13,7 @@ def validat_employee(request,):
     if len(request.HOTEN)>50 or len(request.HOTEN)<=0:
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED, detail=f"Họ tên quá dài hoặc quá ngắn: '{request.HOTEN}'")
 
-    if len(request.GIOITINH) > 3 or len(request.GIOITINH) <= 0:
+    if len(request.GIOITINH) > 6 or len(request.GIOITINH) <= 0:
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
                             detail=f"Giới tính quá dài (Nam - Nữ) ")
     if len(request.GIOITINH) <= 0:
