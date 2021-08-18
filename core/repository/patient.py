@@ -33,7 +33,6 @@ def update_patient(CMND, request: Patient, db: Session):
     if not patient.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Không tìm thấy bệnh  nhân {CMND}')
     patientObject = patient.first()
-    hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
     patientObject.CMND = request.CMND
     patientObject.HOTEN = request.HOTEN
     patientObject.GIOITINH = request.GIOITINH
@@ -44,8 +43,6 @@ def update_patient(CMND, request: Patient, db: Session):
     patientObject.HINHANH = request.HINHANH
     patientObject.SODIENTHOAI = request.SODIENTHOAI
     patientObject.EMAIL = request.EMAIL
-    patientObject.USERNAME=request.USERNAME
-    patientObject.PASSWORD =hashedPassword
     patientObject.updated_at = now
     db.commit()
     db.refresh(patientObject)
