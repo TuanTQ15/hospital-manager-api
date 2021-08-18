@@ -36,7 +36,6 @@ class Employee(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     MALOAINV: str
-    PASSWORD: str
 
 
 class EmployeeShow(BaseModel):
@@ -69,7 +68,6 @@ class Patient(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
-    PASSWORD: str
 
 
 # -	BENHNHAN (CMND, HOTEN, GIOITINH, NGAYSINH, DIACHI, DOITUONG, BHYT,SODIENTHOAI, EMAIL, HINHANH )
