@@ -21,11 +21,11 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
         access_token = token.create_access_token(data={"sub": userPatient.CMND})
 
         return {"access_token": access_token, "account_role": "patient", "token_type": "bearer",
-                "username":userPatient.CMND,"fullname":userPatient.HOTEN,"email":userPatient.EMAIL}
+                "username":userPatient.CMND,"fullname":userPatient.HOTEN,"email":userPatient.EMAIL,"image_url":userPatient.HINHANH}
     elif userEmployee:
         if not Hash.verify(userEmployee.PASSWORD, request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
         access_token = token.create_access_token(data={"sub": userEmployee.MANV})
 
         return {"access_token": access_token, "account_role": "doctor", "token_type": "bearer",
-                "username":userEmployee.MANV,"fullname":userEmployee.HOTEN,"email":userEmployee.EMAIL}
+                "username":userEmployee.MANV,"fullname":userEmployee.HOTEN,"email":userEmployee.EMAIL,"image_url":userEmployee.HINHANH}
