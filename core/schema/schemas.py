@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -30,12 +30,13 @@ class Employee(BaseModel):
     GIOITINH: str="Nữ"
     DIACHI: str
     CMND: str
-    NGAYSINH:datetime.date
+    NGAYSINH:int
     HINHANH: str
     CHUCVU: str
     SODIENTHOAI: str
     EMAIL: str
-    MALOAINV: str
+    MALOAINV: int
+    PASSWORD:str
 
 
 class EmployeeShow(BaseModel):
@@ -45,7 +46,7 @@ class EmployeeShow(BaseModel):
     GIOITINH: str
     DIACHI: str
     CMND: str
-    NGAYSINH: datetime.date
+    NGAYSINH: int
     HINHANH: str
     CHUCVU: str
     SODIENTHOAI: str
@@ -68,8 +69,9 @@ class Patient(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
-
-
+    PASSWORD: str
+    class Config:
+        orm_mode = True
 # -	BENHNHAN (CMND, HOTEN, GIOITINH, NGAYSINH, DIACHI, DOITUONG, BHYT,SODIENTHOAI, EMAIL, HINHANH )
 class PatientShow(BaseModel):
     CMND: str
@@ -95,3 +97,27 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+#-	CHITIETTOATHUOC (MATOA, MATHUOC, SOLUONG, CACHDUNG,DONGIA)
+class DetailPrescription(BaseModel):
+    MATOA: str
+    MATHUOC:str
+    SOLUONG:int
+    CACHDUNG:str
+    DONGIA:int
+    class Config:
+        orm_mode = True
+
+
+#-	TOATHUOC (MATOA,NGAYLAP, YLENH, CTKHAM_ID)
+class Prescription(BaseModel):
+    MATOA:str
+    NGAYLAP:int
+    YLENH:str
+    CTKHAM_ID:int
+    detailPrescriptions: List[DetailPrescription]
+
+    class Config:
+        orm_mode = True
+
+

@@ -22,7 +22,7 @@ def get_all_employees(db: Session = Depends(get_db)):
     return employee.get_all_employees(db)
 
 
-@router.get('/{maNV}', status_code=200, response_model=sm.EmployeeShow)
+@router.get('/{maNV}', status_code=200, response_model=sm.Employee)
 def get_employee_by_id(maNV, db: Session = Depends(get_db)):
     return employee.get_employee_by_id(maNV,db)
 

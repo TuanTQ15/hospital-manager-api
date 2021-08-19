@@ -19,12 +19,7 @@ def validat_employee(request,):
     if len(request.GIOITINH) <= 0:
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
                             detail=f"Giới tính không được để trống (Nam - Nữ)")
-    try:
-        date=request.NGAYSINH
-        datetime(int(date.year), int(date.month), int(date.day))
-    except ValueError:
-        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
-                            detail=f"Định dạng ngày không đúng(YYYY-mm-dd): '{request.NGAYSINH}'")
+
 
     if len(request.DIACHI)>15 :
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED, detail=f"Địa chỉ quá dài")
@@ -48,10 +43,10 @@ def validat_employee(request,):
     if len(request.EMAIL) > 100 :
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
                             detail=f"Email quá dài")
-    if len(request.MALOAINV) > 15:
+    if request.MALOAINV > 3:
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
                             detail=f"Mã loại nhân viên không được quá 15 ký tự")
-    if len(request.MALOAINV) <= 0:
+    if request.MALOAINV < 0:
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
                             detail=f"Mã loại nhân viên không được để trống")
     if len(request.MAKHOA) > 15 :
@@ -68,12 +63,13 @@ def get_all_employees(db: Session):
 def create_employee(request: sm.Employee, db: Session):
     validat_employee(request=request)
     hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
+
     new_employee = EmployeeModel(MANV=request.MANV, MAKHOA=request.MAKHOA, MALOAINV=request.MALOAINV,
                                  HOTEN=request.HOTEN,
                                  GIOITINH=request.GIOITINH,
                                  DIACHI=request.DIACHI, CHUCVU=request.CHUCVU,
-                                 CMND=request.CMND, NGAYSINH=request.NGAYSINH, HINHANH=request.HINHANH,
-                                 SODIENTHOAI=request.SODIENTHOAI, EMAIL=request.EMAIL, USERNAME=request.USERNAME,
+                                 CMND=request.CMND, NGAYSINH= datetime.fromtimestamp(request.NGAYSINH/1000), HINHANH=request.HINHANH,
+                                 SODIENTHOAI=request.SODIENTHOAI, EMAIL=request.EMAIL,
                                  PASSWORD=hashedPassword)
     db.add(new_employee)
     db.commit()

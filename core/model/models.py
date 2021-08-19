@@ -54,3 +54,23 @@ class PatientModel(Base):
     PASSWORD = Column(String)
     created_at = Column(DATETIME, default=now)
     updated_at = Column(DATETIME)
+
+
+#-	TOATHUOC (MATOA,NGAYLAP, Y LENH, CTKHAM_ID)
+class PrescriptionModel(Base):
+    __tablename__ = 'TOATHUOC'
+    MATOA = Column(String, primary_key=True, nullable=False)
+    NGAYLAP = Column(BigInteger)
+    YLENH = Column(String)
+    CTKHAM_ID=Column(Integer)
+    detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="prescription")
+
+#-	CHITIETTOATHUOC (MATOA, MATHUOC, SOLUONG, CACHDUNG,DONGIA)
+class DetailPrescriptionModel(Base):
+    __tablename__ = 'CHITIETTOATHUOC'
+    MATOA = Column(String,ForeignKey(PrescriptionModel.MATOA), primary_key=True, nullable=False)
+    MATHUOC = Column(String, primary_key=True, nullable=False)
+    SOLUONG=Column(Integer)
+    CACHDUNG=Column(String)
+    DONGIA=Column(Integer)
+    prescription = relationship("PrescriptionModel", back_populates="detailPrescriptions")
