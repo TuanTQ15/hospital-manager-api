@@ -10,5 +10,6 @@ router = APIRouter(prefix="/api/prescriptions", tags=['Prescription'])
 
 @router.get('/', response_model=List[sm.Prescription])
 def get_all_prescriptions(db: Session = Depends(get_db)):
+
     return prescription.get_all_prescriptions(db)
 

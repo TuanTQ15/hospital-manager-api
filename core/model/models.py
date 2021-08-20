@@ -64,12 +64,23 @@ class PrescriptionModel(Base):
     CTKHAM_ID=Column(Integer)
     detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="prescription")
 
+
+class MedicineModel(Base):
+    __tablename__ = 'THUOC'
+    MATHUOC=Column(String, primary_key=True,nullable=False)
+    TENTHUOC=Column(String)
+    CONGDUNG=Column(String)
+    MOTA=Column(String)
+    HINHANH=Column(String)
+    detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="medicines")
+
 #-	CHITIETTOATHUOC (MATOA, MATHUOC, SOLUONG, CACHDUNG,DONGIA)
 class DetailPrescriptionModel(Base):
     __tablename__ = 'CHITIETTOATHUOC'
     MATOA = Column(String,ForeignKey(PrescriptionModel.MATOA), primary_key=True, nullable=False)
-    MATHUOC = Column(String, primary_key=True, nullable=False)
+    MATHUOC = Column(String, ForeignKey(MedicineModel.MATHUOC), primary_key=True, nullable=False)
     SOLUONG=Column(Integer)
     CACHDUNG=Column(String)
     DONGIA=Column(Integer)
     prescription = relationship("PrescriptionModel", back_populates="detailPrescriptions")
+    medicines = relationship("MedicineModel", back_populates="detailPrescriptions")

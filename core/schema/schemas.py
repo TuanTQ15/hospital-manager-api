@@ -98,6 +98,14 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: Optional[str] = None
 
+class Medicine(BaseModel):
+    MATHUOC :str
+    TENTHUOC :str
+    CONGDUNG :str
+    MOTA :str
+    HINHANH :str
+    class Config:
+        orm_mode = True
 #-	CHITIETTOATHUOC (MATOA, MATHUOC, SOLUONG, CACHDUNG,DONGIA)
 class DetailPrescription(BaseModel):
     MATOA: str
@@ -105,6 +113,8 @@ class DetailPrescription(BaseModel):
     SOLUONG:int
     CACHDUNG:str
     DONGIA:int
+    medicines: Medicine
+
     class Config:
         orm_mode = True
 
