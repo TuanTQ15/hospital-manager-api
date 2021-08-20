@@ -60,7 +60,6 @@ class PatientModel(Base):
 class PrescriptionModel(Base):
     __tablename__ = 'TOATHUOC'
     MATOA = Column(String, primary_key=True, nullable=False)
-    NGAYLAP = Column(BigInteger)
     YLENH = Column(String)
     CTKHAM_ID=Column(Integer)
     detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="prescription")

@@ -112,7 +112,6 @@ class DetailPrescription(BaseModel):
 #-	TOATHUOC (MATOA,NGAYLAP, YLENH, CTKHAM_ID)
 class Prescription(BaseModel):
     MATOA:str
-    NGAYLAP:int
     YLENH:str
     CTKHAM_ID:int
     detailPrescriptions: List[DetailPrescription]
