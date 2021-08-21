@@ -98,6 +98,9 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: Optional[str] = None
 
+
+
+
 class Medicine(BaseModel):
     MATHUOC :str
     TENTHUOC :str
@@ -128,5 +131,29 @@ class Prescription(BaseModel):
 
     class Config:
         orm_mode = True
+class DetailExamination(BaseModel):
+    CTKHAM_ID:int
+    MABA:str
+    MABS :str
+    MAYTA :str
+    NGAYKHAM:int
+    TINHTRANG:str
+    CHANDOAN:str
+    prescription: Prescription
 
+    class Config:
+        orm_mode = True
 
+class MedicalRecordModel(BaseModel):
+    __tablename__ = 'BENHAN'
+    MABA :str
+    MANV :str
+    CMND :str
+    NGAYLAP :int
+    TIENSU: str
+    CANNANG :int
+    CHIEUCAO:int
+    medicalhistorys: List[DetailExamination] =[]
+
+    class Config:
+        orm_mode = True

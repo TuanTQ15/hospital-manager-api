@@ -56,12 +56,25 @@ class PatientModel(Base):
     updated_at = Column(DATETIME)
 
 
+#CHITIETKHAM(CTKHAM_ID ,  MABA,MABS,MAYTA,NGAYKHAM,TINHTRANG,CHANDOAN )
+class MedicalHistory(Base):
+    __tablename__ = 'CHITIETKHAM'
+    CTKHAM_ID=Column(Integer, primary_key=True, nullable=False)
+    MABA=Column(String,ForeignKey("BENHAN.MABA"),  nullable=False)
+    MABS = Column(String,nullable=False)
+    MAYTA =Column(String,nullable=False)
+    NGAYKHAM=Column(DATETIME,nullable=False)
+    TINHTRANG=Column(String)
+    CHANDOAN = Column(String)
+    prescription = relationship("PrescriptionModel", uselist=False)
+    medicalrecords = relationship("MedicalRecordModel", back_populates="medicalhistorys")
+
 #-	TOATHUOC (MATOA,NGAYLAP, Y LENH, CTKHAM_ID)
 class PrescriptionModel(Base):
     __tablename__ = 'TOATHUOC'
     MATOA = Column(String, primary_key=True, nullable=False)
     YLENH = Column(String)
-    CTKHAM_ID=Column(Integer)
+    CTKHAM_ID=Column(Integer,ForeignKey("CHITIETKHAM.CTKHAM_ID"),nullable=False)
     detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="prescription")
 
 
@@ -84,3 +97,14 @@ class DetailPrescriptionModel(Base):
     DONGIA=Column(Integer)
     prescription = relationship("PrescriptionModel", back_populates="detailPrescriptions")
     medicines = relationship("MedicineModel", back_populates="detailPrescriptions")
+#-	BENHAN ( MABA, NGAYLAP,CHIEUCAO,CANNANG,TIENSU, MANV , CMND )
+class MedicalRecordModel(Base):
+    __tablename__ = 'BENHAN'
+    MABA = Column(String, primary_key=True, nullable=False)
+    MANV =Column(String, ForeignKey(EmployeeModel.MANV),nullable=False)
+    CMND = Column(String,ForeignKey(PatientModel.CMND),nullable=False)
+    NGAYLAP = Column(DATETIME, nullable=False)
+    TIENSU=Column(String)
+    CANNANG = Column(Integer)
+    CHIEUCAO=Column(Integer)
+    medicalhistorys = relationship("MedicalHistory", back_populates="medicalrecords")
