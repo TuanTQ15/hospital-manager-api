@@ -52,7 +52,6 @@ class EmployeeShow(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     MALOAINV: str
-    department: DepartmentShow
     class Config:
         orm_mode = True
 
