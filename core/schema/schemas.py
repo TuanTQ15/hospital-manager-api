@@ -68,7 +68,6 @@ class Patient(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
-    PASSWORD: str
     class Config:
         orm_mode = True
 # -	BENHNHAN (CMND, HOTEN, GIOITINH, NGAYSINH, DIACHI, DOITUONG, BHYT,SODIENTHOAI, EMAIL, HINHANH )
