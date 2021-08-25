@@ -1,4 +1,3 @@
-import datetime
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -85,6 +84,12 @@ class PatientShow(BaseModel):
     class Config:
         orm_mode = True
 
+
+class PatientLogin(BaseModel):
+    CMND: str
+    PASSWORD:str
+    class Config:
+        orm_mode = True
 class Login(BaseModel):
     userName: str
     password: str

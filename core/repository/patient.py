@@ -1,18 +1,24 @@
-from core.schema.schemas import PatientShow, Patient
+from core.schema.schemas import PatientShow, Patient,PatientLogin
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
-from core.model.models import PatientModel
-from core.utility import hashing,uploadImage
+from core.model.models import PatientModel,PatientLoginModel
+from core.utility import hashing,uploadImage,dateconverter
 from datetime import datetime
 now = datetime.now()
 
 
+def get_all_patients(db: Session):
+    patients = db.query(PatientModel).all()
+    for patient in patients:
+        patient.NGAYSINH = dateconverter.convertDateToLong(str(patient.NGAYSINH))
+    return patients
+
 def create_patient(request: Patient, db: Session):
-    hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
+
     new_patient = PatientModel(HOTEN=request.HOTEN, GIOITINH=request.GIOITINH, BHYT=request.BHYT,
                                DIACHI=request.DIACHI, CMND=request.CMND, NGAYSINH=request.NGAYSINH,
                                HINHANH=request.HINHANH, DOITUONG=request.DOITUONG, EMAIL=request.EMAIL,
-                               SODIENTHOAI=request.SODIENTHOAI, USERNAME=request.USERNAME, PASSWORD=hashedPassword,
+                               SODIENTHOAI=request.SODIENTHOAI
                                )
     db.add(new_patient)
     db.commit()
@@ -56,3 +62,11 @@ def destroy_patient(CMND, db: Session):
     employee.delete(synchronize_session=False)
     db.commit()
     return
+def create_account(db:Session,request: PatientLogin):
+    hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
+    print(len(hashedPassword))
+    new_patient_login = PatientLoginModel(CMND=request.CMND,PASSWORD=hashedPassword)
+    db.add(new_patient_login)
+    db.commit()
+    db.refresh(new_patient_login)
+    return new_patient_login

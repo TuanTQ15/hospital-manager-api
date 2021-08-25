@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status
-from core.schema.schemas import PatientShow, Patient
+from core.schema.schemas import PatientShow, Patient,PatientLogin
 from core.model.models import PatientModel
 from core.model.database import get_db
 from sqlalchemy.orm import Session
@@ -19,8 +19,7 @@ def create_patient(request: Patient, db=Depends(get_db)):
 
 @router.get('/', response_model=List[PatientShow])
 def get_all_patients(db: Session = Depends(get_db)):
-    patients = db.query(PatientModel).all()
-    return patients
+    return patient.get_all_patients(db)
 
 
 @router.get('/{CMND}', status_code=200, response_model=PatientShow)
@@ -38,3 +37,7 @@ def update_patient(CMND, request: Patient, db: Session = Depends(get_db)):
 @router.delete('/{CMND}', status_code=status.HTTP_204_NO_CONTENT)
 def destroy_patient(CMND, db: Session = Depends(get_db)):
     return patient.destroy_patient(CMND, db)
+
+@router.post('/register')
+def create_account(request:PatientLogin, db:Session =Depends(get_db)):
+    return patient.create_account(db,request)

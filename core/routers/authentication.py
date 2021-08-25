@@ -11,17 +11,17 @@ router = APIRouter(prefix="/api", tags=["Authentication"])
 
 @router.post('/login')
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    userPatient = db.query(models.PatientModel).filter(models.PatientModel.CMND == request.username).first()
-    userEmployee = db.query(models.EmployeeModel).filter(models.EmployeeModel.MANV == request.username).first()
-    if not userPatient and not userEmployee:
+    userPatientLogin = db.query(models.PatientLoginModel).filter(models.PatientLoginModel.CMND == request.username).first()
+    userEmployee = db.query(models.EmployeeLoginModel).filter(models.EmployeeLoginModel.MANV == request.username).first()
+    if not userPatientLogin and not userEmployee:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Credentials")
-    if userPatient:
-        if not Hash.verify(userPatient.PASSWORD, request.password):
+    if userPatientLogin:
+        if not Hash.verify(userPatientLogin.PASSWORD, request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
-        access_token = token.create_access_token(data={"sub": userPatient.CMND})
-
+        access_token = token.create_access_token(data={"sub": userPatientLogin.CMND})
+        patient=db.query(models.PatientModel).filter(models.PatientModel.CMND==userPatientLogin.CMND).first()
         return {"access_token": access_token, "account_role": "patient", "token_type": "bearer",
-                "username":userPatient.CMND,"fullname":userPatient.HOTEN,"email":userPatient.EMAIL,"image_url":userPatient.HINHANH}
+                "username":userPatientLogin.CMND,"fullname":patient.HOTEN,"email":patient.EMAIL,"image_url":userPatientLogin.HINHANH}
     elif userEmployee:
         if not Hash.verify(userEmployee.PASSWORD, request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")

@@ -33,7 +33,6 @@ class EmployeeModel(Base):
     SODIENTHOAI = Column(String)
     EMAIL = Column(String)
     MALOAINV = Column(Integer)
-    PASSWORD = Column(String)
     created_at = Column(DATETIME, default=now)
     updated_at = Column(DATETIME)
     department = relationship("DepartmentModel", back_populates="employees")
@@ -51,10 +50,24 @@ class PatientModel(Base):
     EMAIL = Column(String)
     DOITUONG = Column(String)
     BHYT = Column(String)
-    PASSWORD = Column(String)
-    created_at = Column(DATETIME, default=now)
-    updated_at = Column(DATETIME)
+    account = relationship("PatientLoginModel", uselist=False)
 
+
+class PatientLoginModel(Base):
+    __tablename__ = 'USERBENHNHAN'
+    ID= Column(Integer,primary_key=True,nullable=False)
+    PASSWORD =Column(String,nullable=False)
+    CMND=Column(String, ForeignKey(PatientModel.CMND),nullable=False)
+    HINHANH= Column(String, nullable=True)
+
+
+class EmployeeLoginModel(Base):
+    __tablename__ = 'USERNHANVIEN'
+    ID = Column(Integer, primary_key=True, nullable=False)
+    PASSWORD = Column(String, nullable=False)
+    MANV = Column(String, nullable=False)
+    USERNAME = Column(String, nullable=False)
+    HINHANH = Column(String, nullable=True)
 
 #CHITIETKHAM(CTKHAM_ID ,  MABA,MABS,MAYTA,NGAYKHAM,TINHTRANG,CHANDOAN )
 class MedicalHistory(Base):
