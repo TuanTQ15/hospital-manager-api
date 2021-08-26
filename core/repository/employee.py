@@ -57,6 +57,8 @@ def validat_employee(request,):
                             detail=f"Mã khoa không được để trống")
 def get_all_employees(db: Session):
     employees = db.query(EmployeeModel).all()
+    for employee in employees:
+        employee.NGAYSINH = dateconverter.convertDateTimeToLong(str(employee.NGAYSINH))
     return employees
 
 #-	NHANVIEN ( MANV, HOTEN, GIOITINH, NGAYSINH, DIACHI, CHUCVU, SODIENTHOAI, CMND, EMAIL, HINHANH, MALOAINV , MAKHOA)
