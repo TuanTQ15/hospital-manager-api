@@ -26,16 +26,14 @@ class Employee(BaseModel):
     MANV: str
     MAKHOA: str
     HOTEN: str
-    GIOITINH: str="Nữ"
+    GIOITINH: str="Female"
     DIACHI: str
-    CMND: str
     NGAYSINH:int
     HINHANH: str
     CHUCVU: str
     SODIENTHOAI: str
     EMAIL: str
-    MALOAINV: int
-    PASSWORD:str
+    MALOAI: int
 
 
 class EmployeeShow(BaseModel):
@@ -44,13 +42,12 @@ class EmployeeShow(BaseModel):
     HOTEN: str
     GIOITINH: str
     DIACHI: str
-    CMND: str
     NGAYSINH: int
     HINHANH: str
     CHUCVU: str
     SODIENTHOAI: str
     EMAIL: str
-    MALOAINV: str
+    MALOAI: str
     class Config:
         orm_mode = True
 
@@ -59,7 +56,7 @@ class EmployeeShow(BaseModel):
 class Patient(BaseModel):
     CMND: str
     HOTEN: str
-    GIOITINH: str="Nữ"
+    GIOITINH: str="Female"
     NGAYSINH: int
     DIACHI: str
     DOITUONG: str

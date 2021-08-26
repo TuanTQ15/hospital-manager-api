@@ -1,6 +1,6 @@
 from core.schema import schemas as sm
 from sqlalchemy.orm import Session
-from core.utility import hashing
+from core.utility import hashing,dateconverter
 from core.model.models import EmployeeModel
 from fastapi import status, HTTPException
 from datetime import datetime
@@ -81,6 +81,7 @@ def get_employee_by_id(maNV, db: Session):
     employee = db.query(EmployeeModel).filter(EmployeeModel.MANV == maNV).first()
     if not employee:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy nhân viên {maNV}")
+    employee.NGAYSINH = dateconverter.convertDateTimeToLong(str(employee.NGAYSINH))
     return employee
 
 

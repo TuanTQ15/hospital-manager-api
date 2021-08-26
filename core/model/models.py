@@ -26,15 +26,12 @@ class EmployeeModel(Base):
     HOTEN = Column(String)
     GIOITINH = Column(String)
     DIACHI = Column(String)
-    CMND = Column(String)
     NGAYSINH = Column(BigInteger)
     HINHANH = Column(String)
     CHUCVU = Column(String)
     SODIENTHOAI = Column(String)
     EMAIL = Column(String)
-    MALOAINV = Column(Integer)
-    created_at = Column(DATETIME, default=now)
-    updated_at = Column(DATETIME)
+    MALOAI = Column(Integer)
     department = relationship("DepartmentModel", back_populates="employees")
 
 
