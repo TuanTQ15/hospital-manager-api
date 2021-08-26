@@ -30,6 +30,7 @@ def get_patient_by_id(CMND, db: Session):
     patient = db.query(PatientModel).filter(PatientModel.CMND == CMND).first()
     if not patient:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy bệnh nhân {CMND}")
+    patient.NGAYSINH = dateconverter.convertDateToLong(str(patient.NGAYSINH))
     return patient
 
 

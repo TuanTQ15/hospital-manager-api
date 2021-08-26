@@ -142,7 +142,7 @@ class DetailExamination(BaseModel):
     NGAYKHAM:int
     TINHTRANG:str
     CHANDOAN:str
-    prescription: Prescription
+    prescription: Prescription =None
 
     class Config:
         orm_mode = True

@@ -44,7 +44,7 @@ class PatientModel(Base):
     HOTEN = Column(String)
     DIACHI = Column(String)
     GIOITINH = Column(String)
-    NGAYSINH = Column(BigInteger)
+    NGAYSINH = Column(DATETIME)
     HINHANH = Column(String)
     SODIENTHOAI = Column(String)
     EMAIL = Column(String)
@@ -108,7 +108,7 @@ class DetailPrescriptionModel(Base):
     SOLUONG=Column(Integer)
     CACHDUNG=Column(String)
     DONGIA=Column(Integer)
-    prescription = relationship("PrescriptionModel", back_populates="detailPrescriptions")
+    prescription = relationship("PrescriptionModel",back_populates="detailPrescriptions")
     medicines = relationship("MedicineModel", back_populates="detailPrescriptions")
 #-	BENHAN ( MABA, NGAYLAP,CHIEUCAO,CANNANG,TIENSU, MANV , CMND )
 class MedicalRecordModel(Base):
