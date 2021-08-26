@@ -26,7 +26,7 @@ class EmployeeModel(Base):
     HOTEN = Column(String)
     GIOITINH = Column(String)
     DIACHI = Column(String)
-    NGAYSINH = Column(BigInteger)
+    NGAYSINH = Column(DATETIME)
     HINHANH = Column(String)
     CHUCVU = Column(String)
     SODIENTHOAI = Column(String)
