@@ -10,6 +10,6 @@ cloudinary.config(
 
 def uploadFile(file_upload):
     try:
-        return up.upload(file_upload)['url']
+        return up.upload(file_upload)['secure_url']
     except:
         return "https://res.cloudinary.com/ptithcm/image/upload/v1629283355/default_user.png"
