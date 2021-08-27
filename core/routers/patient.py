@@ -27,7 +27,7 @@ def get_patient_by_id(CMND, db: Session = Depends(get_db)):
     return patient.get_patient_by_id(CMND, db)
 
 
-@router.put('/{CMND}', response_model=PatientShow)
+@router.put('/{CMND}')
 def update_patient(CMND, request: Patient, db: Session = Depends(get_db)):
     return patient.update_patient(CMND, request, db)
 

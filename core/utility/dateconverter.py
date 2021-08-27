@@ -10,5 +10,6 @@ def convertDateToLong(dateString):
     millisec = dt_obj.timestamp() * 1000
     print(millisec)
     return millisec
-def convertLongToDate(millisencond):
-    return datetime.datetime.fromtimestamp(millisencond).strftime('%Y-%m-%d %H:%M:%S')
+def convertLongToDate(millisencond:int):
+    timestamp=datetime.fromtimestamp(921430800800/1000.0)
+    return timestamp.strftime('%Y-%m-%d %H:%M:%S.%f')
