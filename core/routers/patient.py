@@ -26,7 +26,7 @@ def get_all_patients(db: Session = Depends(get_db)):
 def get_patient_by_id(CMND, db: Session = Depends(get_db)):
     return patient.get_patient_by_id(CMND, db)
 
-@router.get('login/{CMND}', status_code=200)
+@router.get('/login/{CMND}', status_code=200)
 def get_user_login(CMND, db: Session = Depends(get_db)):
     return patient.get_user_login( db,CMND)
 
