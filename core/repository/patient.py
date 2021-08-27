@@ -43,6 +43,7 @@ def update_patient(CMND, request: Patient, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Không tìm thấy bệnh  nhân {CMND}')
 
     patientObject = patient.first()
+    login=patientLogin.first()
     patientObject.CMND = request.CMND
     patientObject.HOTEN = request.HOTEN
     patientObject.GIOITINH = request.GIOITINH
@@ -50,12 +51,14 @@ def update_patient(CMND, request: Patient, db: Session):
     patientObject.DIACHI = request.DIACHI
     patientObject.DOITUONG = request.DOITUONG
     patientObject.BHYT = request.BHYT
-    patientLogin.first().HINHANH= uploadImage.uploadFile(request.HINHANH)
+    login.HINHANH= uploadImage.uploadFile(request.HINHANH)
     patientObject.SODIENTHOAI = request.SODIENTHOAI
     patientObject.EMAIL = request.EMAIL
     patientObject.updated_at = now
     db.commit()
     db.refresh(patientObject)
+    db.refresh(login)
+    patientObject.NGAYSINH=dateconverter.convertDateTimeToLong(str(patientObject.NGAYSINH))
     return patientObject
 
 
