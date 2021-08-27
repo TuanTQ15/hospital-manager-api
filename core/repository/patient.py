@@ -77,3 +77,9 @@ def create_account(db:Session,request: PatientLogin):
     db.commit()
     db.refresh(new_patient_login)
     return new_patient_login
+
+def get_user_login(db:Session,CMND):
+    userlogin = db.query(PatientLoginModel).filter(PatientLoginModel.CMND == CMND).first()
+    if not userlogin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy bệnh nhân {CMND}")
+    return userlogin
