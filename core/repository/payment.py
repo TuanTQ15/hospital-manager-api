@@ -3,7 +3,7 @@ from core.model.models import MedicalRecordModel,DetailArrangeRoomBedModel,Detai
 from core.model.models import BedModel,RoomModel,DetailRoomBedModel,MedicineModel,DetailPrescriptionModel,PrescriptionModel
 from datetime import datetime
 from ..utility import dateconverter
-from ..model.database import get_engine
+from fastapi import  status, HTTPException
 def caculator_room_fee(NGAYTRA,NGAYTHUE):
     total_day = 1
     ngaythue = "{:%m/%d/%Y}".format(NGAYTHUE)
@@ -99,6 +99,8 @@ def get_all_medicine(medicine_raws,db,CMND):
 def get_hospital_fee(CMND,db:Session):
     total_advances = 0
     medicalRecords = db.query(MedicalRecordModel).filter(MedicalRecordModel.CMND==CMND).all()
+    if not medicalRecords:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy {CMND}")
     medicalRecords = sorted(medicalRecords, key=lambda i: i.NGAYLAP, reverse=True)
     medicalRecord=medicalRecords[0]
     roombeds = db.query(DetailArrangeRoomBedModel).filter(DetailArrangeRoomBedModel.MABA==medicalRecord.MABA).all()
@@ -123,4 +125,4 @@ def get_hospital_fee(CMND,db:Session):
     #Tinh thuoc
     medicines=get_all_medicine(medicines, db, CMND)
 
-    return {"advances":total_advances,"room":room,"service":services,"medicine":medicines}
+    return {"advances":total_advances,"rooms":room,"service":services,"medicines":medicines}
