@@ -111,6 +111,8 @@ def get_hospital_fee(CMND,db:Session):
     room= db.query(RoomModel).all()
     detail_room_bed = db.query(DetailRoomBedModel).all()
     medicines=db.query(MedicineModel).all()
+    if not roombeds or not detailservices or not advances or not services_raw or not bed or not room or not detail_room_bed or not medicines:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không có dữ liệu")
     #thong ke thue phong
     room=get_borrow_bed(roombeds,detail_room_bed,bed,room)
 
@@ -125,4 +127,4 @@ def get_hospital_fee(CMND,db:Session):
     #Tinh thuoc
     medicines=get_all_medicine(medicines, db, CMND)
 
-    return {"advances":total_advances,"rooms":room,"service":services,"medicines":medicines}
+    return {"advances":total_advances,"rooms":room,"services":services,"medicines":medicines}
