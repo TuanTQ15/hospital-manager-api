@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey,BigInteger
+from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey,BigInteger,BOOLEAN
 from sqlalchemy.dialects.postgresql import DATE
 from sqlalchemy.orm import relationship
 
@@ -118,3 +118,65 @@ class MedicalRecordModel(Base):
     CANNANG = Column(Integer)
     CHIEUCAO=Column(Integer)
     medicalhistorys = relationship("MedicalHistory", back_populates="medicalrecords")
+    roombeds = relationship("DetailArrangeRoomBedModel", back_populates="medicalhistory")
+    services = relationship("DetailServiceModel", back_populates="medicalhistory")
+    advance = relationship("AdvancesModel", back_populates="medicalhistory")
+
+class DetailArrangeRoomBedModel(Base):
+    __tablename__ = 'CHITIETXEPGIUONG'
+    CTPHONGGIUONG_ID=Column(Integer, primary_key=True,nullable=False)
+    MABA=Column(String,ForeignKey("BENHAN.MABA"),primary_key=True,nullable=False)
+    NGAYTHUE = Column(DATETIME)
+    NGAYTRA =Column(DATETIME)
+    DONGIA = Column (Integer)
+    medicalhistory = relationship("MedicalRecordModel", back_populates="roombeds")
+
+class DetailServiceModel(Base):
+    __tablename__ = 'CHITIETDICHVU'
+    NGAY=Column(DATETIME,primary_key=True,nullable=False)
+    MABA = Column(String,ForeignKey(MedicalRecordModel.MABA), primary_key=True, nullable=False)
+    MADV = Column(String, primary_key=True, nullable=False)
+    KETQUA=Column(String)
+    DONGIA=Column(Integer)
+    HINHANH=Column(String)
+    MANV=Column(String,nullable=False)
+    MABS=Column(String,nullable=False)
+    medicalhistory = relationship("MedicalRecordModel", back_populates="services")
+
+class AdvancesModel(Base):
+    __tablename__ = 'PHIEUTAMUNG'
+    MAPTU = Column(String,primary_key=True,nullable=False)
+    NGAYLAP= Column(DATETIME)
+    SOTIEN = Column(Integer)
+    LYDO=Column(String,nullable=True)
+    GHICHU=Column(String,nullable=True)
+    MABA= Column(String,ForeignKey(MedicalRecordModel.MABA),nullable=False)
+    MANV=Column(String,ForeignKey("NHANVIEN.MANV"),nullable=False)
+    medicalhistory = relationship("MedicalRecordModel", back_populates="advance")
+
+class ServiceModel(Base):
+    __tablename__ = 'DICHVU'
+    TENDV= Column(String)
+    MADV=Column(String, primary_key=True,nullable=False)
+
+class BedModel(Base):
+    __tablename__ = 'GIUONG'
+    MAGIUONG =Column(Integer,primary_key=True)
+    SOGIUONG=Column(String)
+    detail_rom_bed = relationship("DetailRoomBedModel", back_populates="bed")
+
+class RoomModel(Base):
+    __tablename__ = 'PHONG'
+    MAKHOA = Column(String,ForeignKey(DepartmentModel.MAKHOA))
+    SOPHONG = Column(String)
+    MAPHONG = Column(Integer,primary_key=True,nullable=False)
+    detail_rom_bed = relationship("DetailRoomBedModel", back_populates="room")
+
+class DetailRoomBedModel(Base):
+    __tablename__ = 'CHITIETPHONGGIUONG'
+    CTPHONGGIUONG_ID=Column(Integer,primary_key=True,nullable=False)
+    TRANGTHAI = Column(BOOLEAN)
+    MAPHONG=Column(Integer, ForeignKey(RoomModel.MAPHONG))
+    MAGIUONG=Column(Integer,ForeignKey(BedModel.MAGIUONG))
+    bed = relationship("BedModel", back_populates="detail_rom_bed")
+    room = relationship("RoomModel", back_populates="detail_rom_bed")

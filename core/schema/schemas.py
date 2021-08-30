@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -144,8 +145,43 @@ class DetailExamination(BaseModel):
     class Config:
         orm_mode = True
 
+class DetailArrangeRomBedModel(BaseModel):
+    CTPHONGGIUONG_ID:int
+    MABA:str
+    NGAYTHUE:datetime.datetime
+    NGAYTRA:datetime.datetime
+    DONGIA:int
+
+    class Config:
+        orm_mode = True
+
+class DetailServiceModel(BaseModel):
+    NGAY:datetime.datetime
+    MABA:str
+    MADV:str
+    KETQUA:str
+    DONGIA:int
+    HINHANH:str
+    MANV:str
+    MABS:str
+
+    class Config:
+        orm_mode = True
+
+
+class AdvancesModel(BaseModel):
+    MAPTU:str
+    NGAYLAP:datetime.datetime
+    SOTIEN:int
+    LYDO:str
+    GHICHU:str
+    MABA:str
+    MANV:str
+    class Config:
+        orm_mode = True
+
+
 class MedicalRecordModel(BaseModel):
-    __tablename__ = 'BENHAN'
     MABA :str
     MANV :str
     CMND :str
@@ -154,6 +190,8 @@ class MedicalRecordModel(BaseModel):
     CANNANG :int
     CHIEUCAO:int
     medicalhistorys: List[DetailExamination] =[]
-
+    roombeds: List[DetailArrangeRomBedModel]=[]
+    services:List[DetailServiceModel]=[]
+    advance:List[AdvancesModel]=[]
     class Config:
         orm_mode = True
