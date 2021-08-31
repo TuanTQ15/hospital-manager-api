@@ -20,12 +20,12 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
         access_token = token.create_access_token(data={"sub": userPatientLogin.CMND})
         patient=db.query(models.PatientModel).filter(models.PatientModel.CMND==userPatientLogin.CMND).first()
-        return {"access_token": access_token, "account_role": "patient", "token_type": "bearer",
+        return {"access_token": access_token, "account_role": "doctor", "token_type": "bearer",
                 "username":userPatientLogin.CMND,"fullname":patient.HOTEN,"email":patient.EMAIL,"image_url":userPatientLogin.HINHANH}
     elif userEmployee:
         if not Hash.verify(userEmployee.PASSWORD, request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
         access_token = token.create_access_token(data={"sub": userEmployee.MANV})
-
+        employee = db.query(models.PatientModel).filter(models.PatientModel.MANV == userPatientLogin.MANV).first()
         return {"access_token": access_token, "account_role": "doctor", "token_type": "bearer",
-                "username":userEmployee.MANV,"fullname":userEmployee.HOTEN,"email":userEmployee.EMAIL,"image_url":userEmployee.HINHANH}
+                "username":userEmployee.MANV,"fullname":employee.HOTEN,"email":employee.EMAIL,"image_url":employee.HINHANH}
