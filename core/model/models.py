@@ -72,7 +72,7 @@ class MedicalHistory(Base):
     CTKHAM_ID=Column(Integer, primary_key=True, nullable=False)
     MABA=Column(String,ForeignKey("BENHAN.MABA"),  nullable=False)
     MABS = Column(String,nullable=False)
-    MAYTA =Column(String,nullable=False)
+    MAYTA =Column(String,nullable=True)
     NGAYKHAM=Column(DATETIME,nullable=False)
     TINHTRANG=Column(String)
     CHANDOAN = Column(String)

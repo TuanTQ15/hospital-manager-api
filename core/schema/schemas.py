@@ -136,7 +136,7 @@ class DetailExamination(BaseModel):
     CTKHAM_ID:int
     MABA:str
     MABS :str
-    MAYTA :str
+    MAYTA :str =None
     NGAYKHAM:int
     TINHTRANG:str
     CHANDOAN:str
