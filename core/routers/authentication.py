@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api", tags=["Authentication"])
 @router.post('/login')
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     userPatientLogin = db.query(models.PatientLoginModel).filter(models.PatientLoginModel.CMND == request.username).first()
-    userEmployee = db.query(models.EmployeeLoginModel).filter(models.EmployeeLoginModel.MANV == request.username).first()
+    userEmployee = db.query(models.EmployeeLoginModel).filter(models.EmployeeLoginModel.USERNAME == request.username).first()
     if not userPatientLogin and not userEmployee:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Credentials")
     if userPatientLogin:
