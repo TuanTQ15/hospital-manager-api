@@ -1,7 +1,7 @@
 from core.schema import schemas as sm
 from sqlalchemy.orm import Session
 from core.utility import hashing,dateconverter
-from core.model.models import EmployeeModel
+from core.model.models import EmployeeModel,EmployeeLoginModel
 from fastapi import status, HTTPException
 from datetime import datetime
 
@@ -118,3 +118,11 @@ def destroy_employee(maNV, db: Session):
     employee.delete(synchronize_session=False)
     db.commit()
     return
+def create_account(db:Session,request: sm.EmployeeLogin):
+    hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
+    print(len(hashedPassword))
+    new_patient_login = EmployeeLoginModel(MANV=request.MANV,USERNAME=request.USERNAME,PASSWORD=hashedPassword,HINHANH="https://res.cloudinary.com/ptithcm/image/upload/v1629283355/default_user.png")
+    db.add(new_patient_login)
+    db.commit()
+    db.refresh(new_patient_login)
+    return new_patient_login

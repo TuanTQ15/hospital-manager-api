@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from core.schema import schemas as sm
-
 from core.model.database import get_db
 from sqlalchemy.orm import Session
 
@@ -36,3 +35,7 @@ def update_employee(maNV, request: sm.Employee, db: Session = Depends(get_db)):
 def destroy_employee(maNV, db: Session = Depends(get_db)):
     employee.destroy_employee(maNV,db)
     return
+
+@router.post('/register')
+def create_account(request:sm.EmployeeLogin, db:Session =Depends(get_db)):
+    return employee.create_account(db,request)

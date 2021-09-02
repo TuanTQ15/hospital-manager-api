@@ -82,7 +82,12 @@ class PatientShow(BaseModel):
     class Config:
         orm_mode = True
 
-
+class EmployeeLogin(BaseModel):
+    MANV: str
+    USERNAME:str
+    PASSWORD:str
+    class Config:
+        orm_mode = True
 class PatientLogin(BaseModel):
     CMND: str
     PASSWORD:str

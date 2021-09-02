@@ -26,6 +26,6 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
         if not Hash.verify(userEmployee.PASSWORD, request.password):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect Password")
         access_token = token.create_access_token(data={"sub": userEmployee.MANV})
-        employee = db.query(models.PatientModel).filter(models.PatientModel.MANV == userPatientLogin.MANV).first()
+        employee = db.query(models.EmployeeModel).filter(models.EmployeeModel.MANV == userEmployee.MANV).first()
         return {"access_token": access_token, "account_role": "doctor", "token_type": "bearer",
                 "username":userEmployee.MANV,"fullname":employee.HOTEN,"email":employee.EMAIL,"image_url":employee.HINHANH}
