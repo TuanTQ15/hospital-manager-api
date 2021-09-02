@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from core.model.models import MedicalRecordModel,DetailArrangeRoomBedModel,DetailServiceModel,AdvancesModel,MedicalHistory,ServiceModel
-from core.model.models import BedModel,RoomModel,DetailRoomBedModel,MedicineModel,DetailPrescriptionModel,PrescriptionModel
+from core.model.models import MedicalRecordModel,DetailArrangeRoomBedModel,DetailServiceModel,AdvancesModel,ServiceModel
+from core.model.models import BedModel,RoomModel,DetailRoomBedModel,MedicineModel,ReceiptModel
 from datetime import datetime
 from ..utility import dateconverter
 from fastapi import  status, HTTPException
@@ -44,21 +44,22 @@ def get_number_bed(bed,detail):
         if i.MAGIUONG== detail.MAGIUONG:
             return i.SOGIUONG
 
-def get_borrow_bed(roombeds,detail_room_bed,bed,room):
-    for room_bed in roombeds:
-        detail =isBorrow(room_bed.CTPHONGGIUONG_ID, detail_room_bed)
+def get_borrow_bed(MABA,db):
+    query ='select "DONGIA","NGAYTHUE","NGAYTRA" from "CHITIETXEPGIUONG" where "MABA"=\'' + MABA + '\''
+    result = db.execute(query)
+    rooms=[]
+    for r in result:
+        r_dict = dict(r.items())  # convert to dict keyed by column names
+        total_day = caculator_room_fee(r_dict["NGAYTRA"], r_dict["NGAYTHUE"])
+        date_checkin = round(dateconverter.convertDateTimeToLong(str(r_dict["NGAYTHUE"])), 0)
+        date_checkout = round(dateconverter.convertDateTimeToLong(str(r_dict["NGAYTRA"])), 0)
+        room = {"price": r_dict["DONGIA"], "date_checkin": date_checkin, "date_checkout": date_checkout,
+                "total_day": total_day}
+        rooms.append(room)
 
-    if not detail:
-        return {}
-    else:
-        number_room=get_number_room(room, detail)
-        number_bed=get_number_bed(bed,detail)
-        total_day = caculator_room_fee(room_bed.NGAYTRA, room_bed.NGAYTHUE)
-        total_room_fee=total_day*room_bed.DONGIA
-        date_checkin=round(dateconverter.convertDateTimeToLong(str(room_bed.NGAYTHUE)), 0)
-        date_checkout=round(dateconverter.convertDateTimeToLong(str(room_bed.NGAYTRA)), 0)
-        room = {"number_room": number_room, "number_bed": number_bed, "price": room_bed.DONGIA,"date_checkin":date_checkin, "date_checkout":date_checkout, "total_day": total_day, "total_room_fee":total_room_fee}
-        return room
+
+
+    return rooms
 
 
 def get_all_services(services_raw,detailservices,service_dict):
@@ -83,7 +84,6 @@ def get_name_medicine(MATHUOC, medicines):
         if MATHUOC==medicine.MATHUOC:
             return medicine.TENTHUOC
 def get_all_medicine(medicine_raws,db,CMND):
-    r_dict = {}
     medicines=[]
     query = 'select SUM("SOLUONG") as "SOLUONG" ,"MATHUOC", "DONGIA" from public."CHITIETTOATHUOC" as CT ' + ' where "MATOA" in (select "MATOA" from "TOATHUOC" where "CTKHAM_ID" in' \
             + ' (select "CTKHAM_ID" from "CHITIETKHAM" where "MABA" = (select "MABA" from "BENHAN" where "CMND"=\'' + CMND + '\' and "NGAYLAP"= ' \
@@ -103,18 +103,15 @@ def get_hospital_fee(CMND,db:Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy {CMND}")
     medicalRecords = sorted(medicalRecords, key=lambda i: i.NGAYLAP, reverse=True)
     medicalRecord=medicalRecords[0]
-    roombeds = db.query(DetailArrangeRoomBedModel).filter(DetailArrangeRoomBedModel.MABA==medicalRecord.MABA).all()
     detailservices = db.query(DetailServiceModel).filter(DetailServiceModel.MABA==medicalRecord.MABA).all()
     advances = db.query(AdvancesModel).filter(AdvancesModel.MABA==medicalRecord.MABA).all()
     services_raw = db.query(ServiceModel).all()
-    bed = db.query(BedModel).all()
-    room= db.query(RoomModel).all()
-    detail_room_bed = db.query(DetailRoomBedModel).all()
     medicines=db.query(MedicineModel).all()
-    if not roombeds or not detailservices or not advances or not services_raw or not bed or not room or not detail_room_bed or not medicines:
+    receipt= db.query(ReceiptModel).filter(ReceiptModel.MABA==medicalRecord.MABA).all()
+    if not detailservices or not advances or not services_raw  or not medicines:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không có dữ liệu")
     #thong ke thue phong
-    room=get_borrow_bed(roombeds,detail_room_bed,bed,room)
+    rooms=get_borrow_bed(medicalRecord.MABA,db)
 
     #tinh tong tien tam ung
     for advance in advances:
@@ -126,5 +123,23 @@ def get_hospital_fee(CMND,db:Session):
 
     #Tinh thuoc
     medicines=get_all_medicine(medicines, db, CMND)
+    if not receipt:
+        sta=0
+    else:
+        sta=1
+    return {"medical_record":medicalRecord.MABA,"status":sta,"advances":total_advances,"rooms":rooms,"services":services,"medicines":medicines}
+import random
+def create_receiptment(maBA,db):
+    random.randint(0, 9)
+   # re=ReceiptModel(MAHD= ,NGAYLAP = ,TONGTIEN = , GHICHU = ,MANV = ,MABA = ,
+   #                 TIENTHUOC = ,TIENDICHVU = , TIENGIUONG = ,TONGTAMUNG = ,THUCTRA = )
 
-    return {"advances":total_advances,"rooms":room,"services":services,"medicines":medicines}
+
+
+
+
+
+
+
+
+

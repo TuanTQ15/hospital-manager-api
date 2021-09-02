@@ -79,6 +79,7 @@ class MedicalHistory(Base):
     prescription = relationship("PrescriptionModel", uselist=False)
     medicalrecords = relationship("MedicalRecordModel", back_populates="medicalhistorys")
 
+
 #-	TOATHUOC (MATOA,NGAYLAP, Y LENH, CTKHAM_ID)
 class PrescriptionModel(Base):
     __tablename__ = 'TOATHUOC'
@@ -180,3 +181,17 @@ class DetailRoomBedModel(Base):
     MAGIUONG=Column(Integer,ForeignKey(BedModel.MAGIUONG))
     bed = relationship("BedModel", back_populates="detail_rom_bed")
     room = relationship("RoomModel", back_populates="detail_rom_bed")
+
+class ReceiptModel(Base):
+    __tablename__ = 'HOADON'
+    MAHD = Column(String, primary_key=True,nullable=False)
+    NGAYLAP =Column(DATETIME)
+    TONGTIEN=Column(Integer)
+    GHICHU=Column(String)
+    MANV=Column(String, ForeignKey(EmployeeModel.MANV))
+    MABA=Column(String,ForeignKey( MedicalRecordModel.MABA))
+    TIENTHUOC=Column(Integer)
+    TIENDICHVU=Column(Integer)
+    TIENGIUONG=Column(Integer)
+    TONGTAMUNG=Column(Integer)
+    THUCTRA=Column(Integer)

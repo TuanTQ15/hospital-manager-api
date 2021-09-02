@@ -14,3 +14,7 @@ router = APIRouter(prefix="/api/patients", tags=['Patient'])
 @router.get('/payment/{CMND}')
 def get_hospital_fee(CMND,db: Session = Depends(get_db)):
     return payment.get_hospital_fee(CMND,db)
+
+@router.post('/payment/{MABA}')
+def create_receiptment(maBA,db: Session = Depends(get_db)):
+    return payment.create_receiptment(maBA,db)
