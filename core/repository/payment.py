@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from core.model.models import MedicalRecordModel,DetailArrangeRoomBedModel,DetailServiceModel,AdvancesModel,ServiceModel
 from core.model.models import BedModel,RoomModel,DetailRoomBedModel,MedicineModel,ReceiptModel
-from datetime import datetime
+from ..schema import schemas
 from ..utility import dateconverter
 from fastapi import  status, HTTPException
 def caculator_room_fee(NGAYTRA,NGAYTHUE):
@@ -129,11 +129,19 @@ def get_hospital_fee(CMND,db:Session):
         sta=1
     return {"medical_record":medicalRecord.MABA,"status":sta,"advances":total_advances,"rooms":rooms,"services":services,"medicines":medicines}
 import random
-def create_receiptment(maBA,db):
-    random.randint(0, 9)
-   # re=ReceiptModel(MAHD= ,NGAYLAP = ,TONGTIEN = , GHICHU = ,MANV = ,MABA = ,
-   #                 TIENTHUOC = ,TIENDICHVU = , TIENGIUONG = ,TONGTAMUNG = ,THUCTRA = )
+from datetime import datetime
 
+now = datetime.now()
+def create_receiptment(request: schemas.ReceiptModel,db):
+    id=random.randint(0,99999)
+    rep=db.query(ReceiptModel).filter(ReceiptModel.MAHD == id).all()
+    if not rep:
+        new_rep=ReceiptModel(MAHD= id,NGAYLAP = now,TONGTIEN = request.TONGTIEN, GHICHU = request.GHICHU,MANV ='NV-10101010' ,MABA =request.MABA ,
+                    TIENTHUOC = request.TIENTHUOC,TIENDICHVU = request.TIENDICHVU, TIENGIUONG = request.TIENGIUONG,TONGTAMUNG =request.TONGTAMUNG ,THUCTRA =request.THUCTRA )
+    db.add(new_rep)
+    db.commit()
+    db.refresh(new_rep)
+    return "true"
 
 
 
