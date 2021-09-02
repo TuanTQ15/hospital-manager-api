@@ -133,10 +133,11 @@ from datetime import datetime
 
 now = datetime.now()
 def create_receiptment(request: schemas.ReceiptModel,db):
-    id=random.randint(0,99999)
-    rep=db.query(ReceiptModel).filter(ReceiptModel.MAHD == id).all()
+    id=random.randint(10000,99999)
+    MAHD = "HD-" + str(id)
+    rep=db.query(ReceiptModel).filter(ReceiptModel.MAHD == MAHD).all()
     if not rep:
-        new_rep=ReceiptModel(MAHD= id,NGAYLAP = now,TONGTIEN = request.TONGTIEN, GHICHU = request.GHICHU,MANV ='NV-10101010' ,MABA =request.MABA ,
+        new_rep=ReceiptModel(MAHD= MAHD,NGAYLAP = now,TONGTIEN = request.TONGTIEN, GHICHU = request.GHICHU,MANV ='NV-10101010' ,MABA =request.MABA ,
                     TIENTHUOC = request.TIENTHUOC,TIENDICHVU = request.TIENDICHVU, TIENGIUONG = request.TIENGIUONG,TONGTAMUNG =request.TONGTAMUNG ,THUCTRA =request.THUCTRA )
     db.add(new_rep)
     db.commit()
