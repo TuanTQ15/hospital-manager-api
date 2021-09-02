@@ -174,7 +174,7 @@ class AdvancesModel(BaseModel):
     NGAYLAP:datetime.datetime
     SOTIEN:int
     LYDO:str
-    GHICHU:str
+    GHICHU:str=None
     MABA:str
     MANV:str
     class Config:
@@ -198,7 +198,7 @@ class MedicalRecordModel(BaseModel):
 
 class ReceiptModel(BaseModel):
     TONGTIEN :int
-    GHICHU :str
+    GHICHU :str=None
     MABA:str
     TIENTHUOC:int
     TIENGIUONG:int
