@@ -52,7 +52,7 @@ def destroy_department(maKhoa, db: Session):
     return
 
 def statistic_treatment_by_department(db,DATEFROM,DATETO):
-    if DATEFROM < 0  or DATETO <0:
+    if DATEFROM <= 0  or DATETO <=0:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE)
     date_from=dateconverter.convertLongToDate(DATEFROM,'%Y-%m-%d')
     date_to = dateconverter.convertLongToDate(DATETO,'%Y-%m-%d')
