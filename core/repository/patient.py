@@ -48,7 +48,7 @@ def update_patient(CMND, request: Patient, db: Session):
     patientObject.CMND = request.CMND
     patientObject.HOTEN = request.HOTEN
     patientObject.GIOITINH = request.GIOITINH
-    patientObject.NGAYSINH = dateconverter.convertLongToDate(request.NGAYSINH,'%Y-%m-%d')
+    patientObject.NGAYSINH = dateconverter.convertLongToDateTime(request.NGAYSINH)
     patientObject.DIACHI = request.DIACHI
     patientObject.DOITUONG = request.DOITUONG
     patientObject.BHYT = request.BHYT
