@@ -16,7 +16,7 @@ def get_all_patients(db: Session):
 
 def create_patient(request: Patient, db: Session):
 
-    new_patient = PatientModel(HOTEN=request.HOTEN, GIOITINH=request.GIOITINH, BHYT=request.BHYT,
+    new_patient = PatientModel(HOTEN=request.HOTEN, GIOITINH=request.GIOITINH,
                                DIACHI=request.DIACHI, CMND=request.CMND, NGAYSINH=request.NGAYSINH,
                                HINHANH=request.HINHANH, DOITUONG=request.DOITUONG, EMAIL=request.EMAIL,
                                SODIENTHOAI=request.SODIENTHOAI
@@ -51,7 +51,6 @@ def update_patient(CMND, request: Patient, db: Session):
     patientObject.NGAYSINH = dateconverter.convertLongToDateTime(request.NGAYSINH)
     patientObject.DIACHI = request.DIACHI
     patientObject.DOITUONG = request.DOITUONG
-    patientObject.BHYT = request.BHYT
     login.HINHANH= uploadImage.uploadFile(request.HINHANH)
     patientObject.SODIENTHOAI = request.SODIENTHOAI
     patientObject.EMAIL = request.EMAIL

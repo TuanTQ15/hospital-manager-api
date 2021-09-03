@@ -46,7 +46,6 @@ class PatientModel(Base):
     SODIENTHOAI = Column(String)
     EMAIL = Column(String)
     DOITUONG = Column(String)
-    BHYT = Column(String)
     account = relationship("PatientLoginModel", uselist=False)
 
 

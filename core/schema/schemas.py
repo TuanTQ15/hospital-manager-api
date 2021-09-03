@@ -57,11 +57,10 @@ class EmployeeShow(BaseModel):
 class Patient(BaseModel):
     CMND: str
     HOTEN: str
-    GIOITINH: str="Female"
+    GIOITINH: str="Nữ"
     NGAYSINH: int
     DIACHI: str
     DOITUONG: str
-    BHYT: str
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
@@ -75,7 +74,6 @@ class PatientShow(BaseModel):
     NGAYSINH: int
     DIACHI: str
     DOITUONG: str
-    BHYT: str
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str
