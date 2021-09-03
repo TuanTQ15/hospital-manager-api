@@ -3,6 +3,7 @@ from core.model import models
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from datetime import datetime
+from ..utility import dateconverter
 
 now = datetime.now()
 
@@ -49,3 +50,15 @@ def destroy_department(maKhoa, db: Session):
     department.delete(synchronize_session=False)
     db.commit()
     return
+
+def statistic_treatment_by_department(db,DATEFROM,DATETO):
+    if DATEFROM < 0  or DATETO <0:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE)
+    date_from=dateconverter.convertLongToDate(DATEFROM,'%Y-%m-%d')
+    date_to = dateconverter.convertLongToDate(DATETO,'%Y-%m-%d')
+    date_to+= ' 23:59:59.999'
+    query='select "TENKHOA",count(ba."MABA") as "SOLUONG" from "KHOA" as kh left join ' \
+          '"NHANVIEN" as nv on kh."MAKHOA" = nv."MAKHOA" left join "BENHAN" as ba on nv."MANV" = ba."MANV" where' \
+          ' ba."NGAYLAP" between \''+ date_from + '\' and  \''+ date_to+'\' or ba."NGAYLAP" IS NULL group by "TENKHOA"'
+    print(query)
+    return [dict(u) for u in db.execute(query).fetchall()]

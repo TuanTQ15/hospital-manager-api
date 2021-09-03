@@ -1,9 +1,10 @@
-from core.schema.schemas import PatientShow, Patient,PatientLogin
-from fastapi import APIRouter, Depends, status, HTTPException
+from core.schema.schemas import  Patient,PatientLogin,ChangePassword
+from fastapi import  status, HTTPException
 from sqlalchemy.orm import Session
 from core.model.models import PatientModel,PatientLoginModel
 from core.utility import hashing,uploadImage,dateconverter
 from datetime import datetime
+from ..utility.hashing import Hash
 now = datetime.now()
 
 
@@ -82,4 +83,8 @@ def get_user_login(db:Session,CMND):
     userlogin = db.query(PatientLoginModel).filter(PatientLoginModel.CMND == CMND).first()
     if not userlogin:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy bệnh nhân {CMND}")
+    return userlogin
+
+def change_password(request:ChangePassword,db:Session):
+    userlogin = db.query(PatientLoginModel).filter(PatientLoginModel.CMND == request.USERNAME).first()
     return userlogin

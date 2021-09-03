@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status
-from core.schema.schemas import PatientShow, Patient,PatientLogin
+from core.schema.schemas import PatientShow, Patient,PatientLogin,ChangePassword
 from core.model.models import PatientModel
 from core.model.database import get_db
 from sqlalchemy.orm import Session
@@ -44,3 +44,7 @@ def destroy_patient(CMND, db: Session = Depends(get_db)):
 @router.post('/register')
 def create_account(request:PatientLogin, db:Session =Depends(get_db)):
     return patient.create_account(db,request)
+
+@router.put('/change_password')
+def change_password(request:ChangePassword,db:Session =Depends(get_db)):
+    return patient.change_password(request,db)

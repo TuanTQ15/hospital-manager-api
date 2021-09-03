@@ -210,3 +210,11 @@ class ReceiptModel(BaseModel):
     TONGTAMUNG:int
     TIENDICHVU:int
     THUCTRA:int
+
+class ChangePassword(BaseModel):
+    USERNAME:str
+    PASSWORD:str
+
+class StatisticTreatment(BaseModel):
+    DATEFROM:int
+    DATETO:int

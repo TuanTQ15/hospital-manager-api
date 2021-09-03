@@ -31,3 +31,7 @@ def update_department(maKhoa, request: sm.Department, db: Session = Depends(get_
 def destroy_department(maKhoa, db: Session = Depends(get_db),au=Depends(oauth2.get_current_user)):
     department.destroy_department(maKhoa,db)
     return
+
+@router.get('/statistic/treatment')
+def statistic_treatment_by_department(DATEFROM:int,DATETO:int,db: Session = Depends(get_db)):
+    return department.statistic_treatment_by_department(db,DATEFROM,DATETO)
