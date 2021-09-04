@@ -86,6 +86,8 @@ def get_user_login(db:Session,CMND):
 
 def change_password(request:ChangePassword,db:Session):
     userlogin = db.query(PatientLoginModel).filter(PatientLoginModel.CMND == request.USERNAME).first()
+    if not userlogin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy bệnh nhân {request.USERNAME}")
     hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
     userlogin.PASSWORD=hashedPassword
     db.commit()

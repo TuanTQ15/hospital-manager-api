@@ -126,3 +126,13 @@ def create_account(db:Session,request: sm.EmployeeLogin):
     db.commit()
     db.refresh(new_patient_login)
     return new_patient_login
+
+def change_password(request:sm.ChangePassword,db:Session):
+    userlogin = db.query(EmployeeLoginModel).filter(EmployeeLoginModel.USERNAME == request.USERNAME).first()
+    if not userlogin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy bệnh nhân {request.USERNAME}")
+    hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
+    userlogin.PASSWORD=hashedPassword
+    db.commit()
+    db.refresh(userlogin)
+    return "true"
