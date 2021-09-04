@@ -28,4 +28,4 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
         access_token = token.create_access_token(data={"sub": userEmployee.MANV})
         employee = db.query(models.EmployeeModel).filter(models.EmployeeModel.MANV == userEmployee.MANV).first()
         return {"access_token": access_token, "account_role": "doctor", "token_type": "bearer",
-                "username":userEmployee.MANV,"fullname":employee.HOTEN,"email":employee.EMAIL,"image_url":employee.HINHANH}
+                "username":userEmployee.MANV,"fullname":employee.HOTEN,"email":employee.EMAIL,"image_url":userEmployee.HINHANH}

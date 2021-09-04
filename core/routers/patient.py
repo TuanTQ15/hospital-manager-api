@@ -45,6 +45,6 @@ def destroy_patient(CMND, db: Session = Depends(get_db)):
 def create_account(request:PatientLogin, db:Session =Depends(get_db)):
     return patient.create_account(db,request)
 
-@router.put('/change_password')
+@router.put('/password/change')
 def change_password(request:ChangePassword,db:Session =Depends(get_db)):
     return patient.change_password(request,db)

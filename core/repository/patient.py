@@ -86,4 +86,8 @@ def get_user_login(db:Session,CMND):
 
 def change_password(request:ChangePassword,db:Session):
     userlogin = db.query(PatientLoginModel).filter(PatientLoginModel.CMND == request.USERNAME).first()
+    hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
+    userlogin.PASSWORD=hashedPassword
+    db.commit()
+    db.refresh(userlogin)
     return userlogin
