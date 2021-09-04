@@ -90,4 +90,4 @@ def change_password(request:ChangePassword,db:Session):
     userlogin.PASSWORD=hashedPassword
     db.commit()
     db.refresh(userlogin)
-    return
+    return "true"
