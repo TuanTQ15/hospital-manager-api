@@ -43,3 +43,7 @@ def create_account(request:sm.EmployeeLogin, db:Session =Depends(get_db)):
 @router.put('/password/change')
 def change_password(request:sm.ChangePassword,db:Session =Depends(get_db)):
     return employee.change_password(request,db)
+
+@router.get('/login/{maNV}', status_code=200)
+def get_user_login(maNV, db: Session = Depends(get_db)):
+    return employee.get_user_login( db,maNV)

@@ -164,3 +164,9 @@ def change_password(request:sm.ChangePassword,db:Session):
     db.commit()
     db.refresh(userlogin)
     return "true"
+
+def get_user_login(db:Session,maNV):
+    employeeLogin = db.query(EmployeeLoginModel).filter(EmployeeLoginModel.MANV == maNV).first()
+    if not employeeLogin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy bệnh nhân {maNV}")
+    return employeeLogin
