@@ -1,6 +1,6 @@
 from core.schema import schemas as sm
 from sqlalchemy.orm import Session
-from core.utility import hashing,dateconverter
+from core.utility import hashing,dateconverter,uploadImage
 from core.model.models import EmployeeModel,EmployeeLoginModel
 from fastapi import status, HTTPException
 from datetime import datetime
@@ -55,6 +55,35 @@ def validat_employee(request,):
     if len(request.MAKHOA) <= 0:
         raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
                             detail=f"Mã khoa không được để trống")
+
+def validat_employee_updated(request,):
+
+
+    if len(request.HOTEN)>50 or len(request.HOTEN)<=0:
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED, detail=f"Họ tên quá dài hoặc quá ngắn: '{request.HOTEN}'")
+
+    if len(request.GIOITINH) > 6 or len(request.GIOITINH) <= 0:
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
+                            detail=f"Giới tính quá dài (Nam - Nữ) ")
+    if len(request.GIOITINH) <= 0:
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,
+                            detail=f"Giới tính không được để trống (Nam - Nữ)")
+
+
+    if len(request.DIACHI)>15 :
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED, detail=f"Địa chỉ quá dài")
+
+    if  len(request.DIACHI) <= 0:
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED, detail=f"Địa chỉ không được để trống")
+
+
+    if len(request.SODIENTHOAI) > 15:
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,detail=f"Số điện thoại quá dài")
+
+
+    if len(request.EMAIL) > 100 :
+        raise HTTPException(status_code=status.HTTP_411_LENGTH_REQUIRED,detail=f"Mã khoa không được để trống")
+
 def get_all_employees(db: Session):
     employees = db.query(EmployeeModel).all()
     for employee in employees:
@@ -87,27 +116,26 @@ def get_employee_by_id(maNV, db: Session):
     return employee
 
 
-def update_employee(maNV, request: sm.Employee, db: Session):
+def update_employee(maNV, request: sm.EmployeeUpdate, db: Session):
     employee = db.query(EmployeeModel).filter(EmployeeModel.MANV == maNV)
+    employee_login= db.query(EmployeeLoginModel).filter(EmployeeLoginModel.MANV==maNV).first()
     if not employee.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Không tìm thấy nhân viên {maNV}')
-    validat_employee(request=request)
+    if not employee_login:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Không tìm thấy nhân viên {maNV}')
+    validat_employee_updated(request=request)
     employeeObject = employee.first()
-    employeeObject.MANV = request.MANV
-    employeeObject.MAKHOA = request.MAKHOA
-    employeeObject.MALOAINV = request.MALOAINV
     employeeObject.HOTEN = request.HOTEN
     employeeObject.GIOITINH = request.GIOITINH
     employeeObject.DIACHI = request.DIACHI
-    employeeObject.CMND = request.CMND
-    employeeObject.CHUCVU = request.CHUCVU
-    employeeObject.NGAYSINH = request.NGAYSINH
-    employeeObject.HINHANH = request.HINHANH
+    employeeObject.NGAYSINH = dateconverter.convertLongToDateTime(request.NGAYSINH)
+    employee_login.HINHANH = uploadImage.uploadFile(request.HINHANH)
     employeeObject.SODIENTHOAI = request.SODIENTHOAI
     employeeObject.EMAIL = request.EMAIL
     employeeObject.updated_at = now
     db.commit()
     db.refresh(employeeObject)
+    employeeObject.NGAYSINH = dateconverter.convertDateTimeToLong(str(employeeObject.NGAYSINH))
     return employeeObject
 
 

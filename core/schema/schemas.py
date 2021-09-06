@@ -35,7 +35,14 @@ class Employee(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     MALOAI: int
-
+class EmployeeUpdate(BaseModel):
+    HOTEN: str
+    GIOITINH: str="Female"
+    DIACHI: str
+    HINHANH:str
+    NGAYSINH:int
+    SODIENTHOAI: str
+    EMAIL: str
 
 class EmployeeShow(BaseModel):
     MANV: str

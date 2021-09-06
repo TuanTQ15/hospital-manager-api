@@ -27,7 +27,7 @@ def get_employee_by_id(maNV, db: Session = Depends(get_db)):
 
 
 @router.put('/{maNV}', response_model=sm.EmployeeShow)
-def update_employee(maNV, request: sm.Employee, db: Session = Depends(get_db)):
+def update_employee(maNV, request: sm.EmployeeUpdate, db: Session = Depends(get_db)):
     return employee.update_employee(maNV,request,db)
 
 
