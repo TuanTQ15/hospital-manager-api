@@ -36,11 +36,13 @@ class Employee(BaseModel):
     EMAIL: str
     MALOAI: int
 class EmployeeUpdate(BaseModel):
+    MANV: str
     HOTEN: str
-    GIOITINH: str="Female"
+    GIOITINH: str="Nữ"
     DIACHI: str
     HINHANH:str
     NGAYSINH:int
+    CHUCVU: str
     SODIENTHOAI: str
     EMAIL: str
 
