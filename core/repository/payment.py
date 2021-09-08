@@ -1,3 +1,4 @@
+import pytz as pytz
 from sqlalchemy.orm import Session
 from core.model.models import MedicalRecordModel,DetailArrangeRoomBedModel,DetailServiceModel,AdvancesModel,ServiceModel
 from core.model.models import BedModel,RoomModel,DetailRoomBedModel,MedicineModel,ReceiptModel
@@ -129,7 +130,7 @@ def get_hospital_fee(MABA,db:Session):
 import random
 from datetime import datetime
 
-now  = datetime.utcnow()
+now  = datetime.datetime.now(tz=pytz.timezone('Asia/Bangkok'))
 def create_receiptment(request: schemas.ReceiptModel,db):
     id_list=[]
     result = db.execute('select "MAHD" from "HOADON"')
