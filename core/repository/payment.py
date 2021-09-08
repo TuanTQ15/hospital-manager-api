@@ -64,30 +64,32 @@ def get_borrow_bed(MABA,db):
 
 def get_all_services(services_raw,detailservices,service_dict):
     services=[]
-    for service_raw in services_raw:
-        for detailservice in detailservices:
-            if service_raw.MADV==detailservice.MADV:
-                price=detailservice.DONGIA
-                quantity=service_dict[service_raw.MADV]
-                day= round(dateconverter.convertDateTimeToLong(str(detailservice.NGAY)),0)
-                break
-        if quantity>0:
-            service = {"name": service_raw.TENDV, "quantity": quantity, "price": price,"day":day}
-            services.append(service)
-            price=0
-            day=0
-            quantity=0
+    quantity=0
+    if len(service_dict)>0:
+        for service_raw in services_raw:
+            for detailservice in detailservices:
+                if service_raw.MADV==detailservice.MADV:
+                    price=detailservice.DONGIA
+                    quantity=service_dict[service_raw.MADV]
+                    day= round(dateconverter.convertDateTimeToLong(str(detailservice.NGAY)),0)
+                    break
+            if quantity>0:
+                service = {"name": service_raw.TENDV, "quantity": quantity, "price": price,"day":day}
+                services.append(service)
+                price=0
+                day=0
+                quantity=0
     return services
 
 def get_name_medicine(MATHUOC, medicines):
     for medicine in medicines:
         if MATHUOC==medicine.MATHUOC:
             return medicine.TENTHUOC
-def get_all_medicine(medicine_raws,db,CMND):
+def get_all_medicine(medicine_raws,db,MABA):
     medicines=[]
-    query = 'select SUM("SOLUONG") as "SOLUONG" ,"MATHUOC", "DONGIA" from public."CHITIETTOATHUOC" as CT ' + ' where "MATOA" in (select "MATOA" from "TOATHUOC" where "CTKHAM_ID" in' \
-            + ' (select "CTKHAM_ID" from "CHITIETKHAM" where "MABA" = (select "MABA" from "BENHAN" where "CMND"=\'' + CMND + '\' and "NGAYLAP"= ' \
-            + ' ( SELECT  MAX( "NGAYLAP")FROM "BENHAN" where "CMND"=\'' + CMND + '\')))) group by "MATHUOC", "DONGIA" '
+    query = 'select SUM("SOLUONG") as "SOLUONG" ,"MATHUOC", "DONGIA" from public."CHITIETTOATHUOC" as CT '+\
+            'where "MATOA" in (select "MATOA" from "TOATHUOC" where "CTKHAM_ID" in (select "CTKHAM_ID" ' +\
+            'from "CHITIETKHAM" where "MABA"=\''+MABA+'\' )) group by "MATHUOC","DONGIA"'
     print(query)
     result = db.execute(query)
     for r in result:
@@ -96,22 +98,18 @@ def get_all_medicine(medicine_raws,db,CMND):
         medicine={"name":name,"price":r_dict["DONGIA"],"quantity":r_dict["SOLUONG"]}
         medicines.append(medicine)
     return medicines
-def get_hospital_fee(CMND,db:Session):
+def get_hospital_fee(MABA,db:Session):
     total_advances = 0
-    medicalRecords = db.query(MedicalRecordModel).filter(MedicalRecordModel.CMND==CMND).all()
-    if not medicalRecords:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy {CMND}")
-    medicalRecords = sorted(medicalRecords, key=lambda i: i.NGAYLAP, reverse=True)
-    medicalRecord=medicalRecords[0]
-    detailservices = db.query(DetailServiceModel).filter(DetailServiceModel.MABA==medicalRecord.MABA).all()
-    advances = db.query(AdvancesModel).filter(AdvancesModel.MABA==medicalRecord.MABA).all()
+
+    detailservices = db.query(DetailServiceModel).filter(DetailServiceModel.MABA==MABA).all()
+    advances = db.query(AdvancesModel).filter(AdvancesModel.MABA==MABA).all()
     services_raw = db.query(ServiceModel).all()
     medicines=db.query(MedicineModel).all()
-    receipt= db.query(ReceiptModel).filter(ReceiptModel.MABA==medicalRecord.MABA).all()
-    if not detailservices or not advances or not services_raw  or not medicines:
+    receipt= db.query(ReceiptModel).filter(ReceiptModel.MABA==MABA).all()
+    if not detailservices and not advances and not services_raw  and not medicines:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không có dữ liệu")
     #thong ke thue phong
-    rooms=get_borrow_bed(medicalRecord.MABA,db)
+    rooms=get_borrow_bed(MABA,db)
 
     #tinh tong tien tam ung
     for advance in advances:
@@ -122,27 +120,37 @@ def get_hospital_fee(CMND,db:Session):
     services=get_all_services(services_raw,detailservices,service_dict)
 
     #Tinh thuoc
-    medicines=get_all_medicine(medicines, db, CMND)
+    medicines=get_all_medicine(medicines, db, MABA)
     if not receipt:
         sta=0
     else:
         sta=1
-    return {"medical_record":medicalRecord.MABA,"status":sta,"advances":total_advances,"rooms":rooms,"services":services,"medicines":medicines}
+    return {"medical_record":MABA,"status":sta,"advances":total_advances,"rooms":rooms,"services":services,"medicines":medicines}
 import random
 from datetime import datetime
 
 now = datetime.now()
 def create_receiptment(request: schemas.ReceiptModel,db):
-    id=random.randint(10000,99999)
-    MAHD = "HD-" + str(id)
-    rep=db.query(ReceiptModel).filter(ReceiptModel.MAHD == MAHD).all()
-    if not rep:
-        new_rep=ReceiptModel(MAHD= MAHD,NGAYLAP = now,TONGTIEN = request.TONGTIEN, GHICHU = request.GHICHU,MANV ='NV-10101010' ,MABA =request.MABA ,
-                    TIENTHUOC = request.TIENTHUOC,TIENDICHVU = request.TIENDICHVU, TIENGIUONG = request.TIENGIUONG,TONGTAMUNG =request.TONGTAMUNG ,THUCTRA =request.THUCTRA )
+    id_list=[]
+    result = db.execute('select "MAHD" from "HOADON"')
+    for r in result:
+        r_dict = dict(r.items())  # convert to dict keyed by column names
+        r_value= r_dict["MAHD"]
+        pr, id = r_value.split('-')
+        id_list.append(int(id))
+    if len(id_list) >0:
+        max_value =max(id_list)
+        max_value+=1
+        MAHD = 'HD-' + str(max_value)
+    else:
+        MAHD = 'HD-1'
+    new_rep = ReceiptModel(MAHD=MAHD, NGAYLAP=now, TONGTIEN=request.TONGTIEN, GHICHU=request.GHICHU,
+                           MANV='NV-10101010', MABA=request.MABA, TIENTHUOC=request.TIENTHUOC, TIENDICHVU=request.TIENDICHVU,
+                           TIENGIUONG=request.TIENGIUONG, TONGTAMUNG=request.TONGTAMUNG, THUCTRA=request.THUCTRA)
     db.add(new_rep)
     db.commit()
     db.refresh(new_rep)
-    return "true"
+    return new_rep
 
 
 

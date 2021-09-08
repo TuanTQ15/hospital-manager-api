@@ -207,6 +207,18 @@ class MedicalRecordModel(BaseModel):
     advance:List[AdvancesModel]=[]
     class Config:
         orm_mode = True
+class MedicalRecordShow(BaseModel):
+    MABA :str
+    MANV :str
+    CMND :str
+    NGAYLAP :int
+    TIENSU: str
+    CANNANG :int
+    CHIEUCAO:int
+
+    class Config:
+        orm_mode = True
+
 
 class ReceiptModel(BaseModel):
     TONGTIEN :int

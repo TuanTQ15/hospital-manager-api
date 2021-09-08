@@ -9,9 +9,9 @@ now = datetime.now()
 router = APIRouter(prefix="/api/patients", tags=['Patient'])
 
 
-@router.get('/payment/{CMND}')
-def get_hospital_fee(CMND,db: Session = Depends(get_db)):
-    return payment.get_hospital_fee(CMND,db)
+@router.get('/payment/{MABA}')
+def get_hospital_fee(MABA,db: Session = Depends(get_db)):
+    return payment.get_hospital_fee(MABA,db)
 
 @router.post('/payment')
 def create_receiptment(request:ReceiptModel,db: Session = Depends(get_db)):

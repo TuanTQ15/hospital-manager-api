@@ -12,3 +12,6 @@ router = APIRouter(prefix="/api/medicalrecords", tags=['Medical Record'])
 def get_all_medical_history(CMND,db: Session = Depends(get_db)):
     return medicalrecord.get_all_medical_record(db,CMND)
 
+@router.get('/payment/{CMND}',response_model=List[sm.MedicalRecordShow])
+def get_all_medical_history(CMND,db: Session = Depends(get_db)):
+    return medicalrecord.get_medical_record(db,CMND)
