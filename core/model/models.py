@@ -54,7 +54,7 @@ class PatientLoginModel(Base):
     ID= Column(Integer,primary_key=True,nullable=False)
     PASSWORD =Column(String,nullable=False)
     CMND=Column(String, ForeignKey(PatientModel.CMND),nullable=False)
-    HINHANH= Column(String, nullable=True)
+    HINHANH= Column(String, nullable=True,default="https://res.cloudinary.com/ptithcm/image/upload/v1629283355/default_user.png")
 
 
 class EmployeeLoginModel(Base):
