@@ -129,7 +129,7 @@ def get_hospital_fee(MABA,db:Session):
 import random
 from datetime import datetime
 
-now = datetime.now()
+now  = datetime.utcnow()
 def create_receiptment(request: schemas.ReceiptModel,db):
     id_list=[]
     result = db.execute('select "MAHD" from "HOADON"')
