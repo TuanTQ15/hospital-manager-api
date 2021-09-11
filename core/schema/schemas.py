@@ -233,6 +233,7 @@ class ReceiptModel(BaseModel):
 class ChangePassword(BaseModel):
     USERNAME:str
     PASSWORD:str
+    NEWPASSWORD:str
 
 class StatisticTreatment(BaseModel):
     DATEFROM:int
