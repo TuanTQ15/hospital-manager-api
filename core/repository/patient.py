@@ -73,6 +73,9 @@ def create_account(db:Session,request: PatientLogin):
     userlogin =db.query(PatientLoginModel).filter(PatientLoginModel.CMND==request.CMND).first()
     if userlogin:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Bệnh nhân này đã có tài khoản')
+    user =db.query(PatientModel).filter(PatientModel.CMND==request.CMND).first()
+    if user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Không tồn tại chứng minh này trên hệ thống')
     hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
     new_patient_login = PatientLoginModel(CMND=request.CMND,PASSWORD=hashedPassword)
     db.add(new_patient_login)
