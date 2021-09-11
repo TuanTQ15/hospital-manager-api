@@ -246,6 +246,6 @@ class PatientMedicalRecord(BaseModel):
     SODIENTHOAI: str
     EMAIL: str
     HINHANH: str=None
-    
+    medicalrecords:List[MedicalRecordModel]=[]
     class Config:
         orm_mode = True

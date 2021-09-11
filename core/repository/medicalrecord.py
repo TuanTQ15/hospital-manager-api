@@ -34,7 +34,13 @@ def get_all(db:Session):
     for patient in patients:
         patient.NGAYSINH = dateconverter.convertDateTimeToLong(str(patient.NGAYSINH))
         for medicalrecord in patient.medicalrecords:
-            medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
+            try:
+                medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
+            except:
+                medicalrecord.NGAYLAP = 0
             for medialhistory in medicalrecord.medicalhistorys:
-                medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
+                try:
+                    medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
+                except:
+                    medialhistory.NGAYKHAM = 0
     return patients

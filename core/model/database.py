@@ -12,14 +12,14 @@ DATABASE_URL = driverName + userRemote + ':' + passwordRemote + "@" + hostRemote
 
 userLocal = 'postgres'
 passwordLocal = "postgres"
-hostLocal = '6.tcp.ngrok.io'
-port = '14185'
+hostLocal = '0.tcp.ngrok.io'
+port = '13032'
 dbNameLocal = 'benhvien'
 driverName = 'postgresql://'
 DATABASE_URL_LOCAL = driverName + userLocal + ':' + passwordLocal + "@" + hostLocal + ':' + port + '/' + dbNameLocal
 
 
-engine = create_engine(DATABASE_URL_LOCAL)
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
