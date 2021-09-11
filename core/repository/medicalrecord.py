@@ -26,3 +26,13 @@ def get_medical_record(db: Session,CMND):
         medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
 
     return medicalrecords
+
+def get_all(db:Session):
+    medicalrecords = db.query(MedicalRecordModel).all()
+    if not medicalrecords:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy")
+    for medicalrecord in medicalrecords:
+        medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
+        for medialhistory in medicalrecord.medicalhistorys:
+            medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
+    return medicalrecords
