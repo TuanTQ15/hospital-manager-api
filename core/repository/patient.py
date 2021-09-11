@@ -70,13 +70,15 @@ def destroy_patient(CMND, db: Session):
     db.commit()
     return
 def create_account(db:Session,request: PatientLogin):
+    userlogin =db.query(PatientLoginModel).filter(PatientLoginModel.CMND==request.CMND).first()
+    if userlogin:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Bệnh nhân này đã có tài khoản')
     hashedPassword = hashing.Hash.bcrypt(request.PASSWORD)
-    print(len(hashedPassword))
     new_patient_login = PatientLoginModel(CMND=request.CMND,PASSWORD=hashedPassword)
     db.add(new_patient_login)
     db.commit()
     db.refresh(new_patient_login)
-    return new_patient_login
+    return "success"
 
 def get_user_login(db:Session,CMND):
     userlogin = db.query(PatientLoginModel).filter(PatientLoginModel.CMND == CMND).first()
