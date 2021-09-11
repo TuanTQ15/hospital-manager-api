@@ -1,11 +1,13 @@
 from datetime import datetime
 
 def convertDateTimeToLong(dateString):
+    millisec=0
     try:
         dt_obj = datetime.strptime(dateString, '%Y-%m-%d %H:%M:%S.%f')
         millisec = dt_obj.timestamp() * 1000
         return millisec
     except:
+
         return 0
 
 def convertDateToLong(dateString):

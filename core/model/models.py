@@ -83,7 +83,7 @@ class MedicalHistory(Base):
 class PrescriptionModel(Base):
     __tablename__ = 'TOATHUOC'
     MATOA = Column(String, primary_key=True, nullable=False)
-    YLENH = Column(String)
+    YLENH = Column(String,nullable=True)
     CTKHAM_ID=Column(Integer,ForeignKey("CHITIETKHAM.CTKHAM_ID"),nullable=False)
     detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="prescription")
 
@@ -94,7 +94,7 @@ class MedicineModel(Base):
     TENTHUOC=Column(String)
     CONGDUNG=Column(String)
     MOTA=Column(String)
-    HINHANH=Column(String)
+    HINHANH=Column(String,nullable=True)
     detailPrescriptions = relationship("DetailPrescriptionModel", back_populates="medicines")
 
 #-	CHITIETTOATHUOC (MATOA, MATHUOC, SOLUONG, CACHDUNG,DONGIA)
@@ -114,7 +114,7 @@ class MedicalRecordModel(Base):
     MANV =Column(String, ForeignKey(EmployeeModel.MANV),nullable=False)
     CMND = Column(String,ForeignKey(PatientModel.CMND),nullable=False)
     NGAYLAP = Column(DATETIME, nullable=False)
-    TIENSU=Column(String)
+    TIENSU=Column(String,nullable=True)
     CANNANG = Column(Integer)
     CHIEUCAO=Column(Integer)
     medicalhistorys = relationship("MedicalHistory", back_populates="medicalrecords")
@@ -138,7 +138,7 @@ class DetailServiceModel(Base):
     MADV = Column(String, primary_key=True, nullable=False)
     KETQUA=Column(String)
     DONGIA=Column(Integer)
-    HINHANH=Column(String)
+    HINHANH=Column(String,nullable=True)
     MANV=Column(String,nullable=False)
     MABS=Column(String,nullable=False)
     medicalhistory = relationship("MedicalRecordModel", back_populates="services")

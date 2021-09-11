@@ -121,7 +121,7 @@ class Medicine(BaseModel):
     TENTHUOC :str
     CONGDUNG :str
     MOTA :str
-    HINHANH :str
+    HINHANH :str=None
     class Config:
         orm_mode = True
 #-	CHITIETTOATHUOC (MATOA, MATHUOC, SOLUONG, CACHDUNG,DONGIA)
@@ -140,9 +140,9 @@ class DetailPrescription(BaseModel):
 #-	TOATHUOC (MATOA,NGAYLAP, YLENH, CTKHAM_ID)
 class Prescription(BaseModel):
     MATOA:str
-    YLENH:str
+    YLENH:str=None
     CTKHAM_ID:int
-    detailPrescriptions: List[DetailPrescription]
+    detailPrescriptions: List[DetailPrescription]=None
 
     class Config:
         orm_mode = True
@@ -165,7 +165,6 @@ class DetailArrangeRomBedModel(BaseModel):
     NGAYTHUE:datetime.datetime
     NGAYTRA:datetime.datetime
     DONGIA:int
-
     class Config:
         orm_mode = True
 
@@ -173,12 +172,11 @@ class DetailServiceModel(BaseModel):
     NGAY:datetime.datetime
     MABA:str
     MADV:str
-    KETQUA:str
+    KETQUA:str=None
     DONGIA:int
-    HINHANH:str
+    HINHANH:str=None
     MANV:str
     MABS:str
-
     class Config:
         orm_mode = True
 
@@ -187,7 +185,7 @@ class AdvancesModel(BaseModel):
     MAPTU:str
     NGAYLAP:datetime.datetime
     SOTIEN:int
-    LYDO:str
+    LYDO:str=None
     GHICHU:str=None
     MABA:str
     MANV:str
@@ -200,13 +198,10 @@ class MedicalRecordModel(BaseModel):
     MANV :str
     CMND :str
     NGAYLAP :int
-    TIENSU: str
+    TIENSU: str=None
     CANNANG :int
     CHIEUCAO:int
-    medicalhistorys: List[DetailExamination] =[]
-    roombeds: List[DetailArrangeRomBedModel]=[]
-    services:List[DetailServiceModel]=[]
-    advance:List[AdvancesModel]=[]
+    medicalhistorys: List[DetailExamination] =None
     class Config:
         orm_mode = True
 class MedicalRecordShow(BaseModel):
@@ -250,7 +245,7 @@ class PatientMedicalRecord(BaseModel):
     DOITUONG: str
     SODIENTHOAI: str
     EMAIL: str
-    HINHANH: str
-    medicalrecords:List[MedicalRecordModel]
+    HINHANH: str=None
+    
     class Config:
         orm_mode = True
