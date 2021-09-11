@@ -75,6 +75,8 @@ class Patient(BaseModel):
     HINHANH: str
     class Config:
         orm_mode = True
+
+
 # -	BENHNHAN (CMND, HOTEN, GIOITINH, NGAYSINH, DIACHI, DOITUONG, BHYT,SODIENTHOAI, EMAIL, HINHANH )
 class PatientShow(BaseModel):
     CMND: str
@@ -238,3 +240,17 @@ class ChangePassword(BaseModel):
 class StatisticTreatment(BaseModel):
     DATEFROM:int
     DATETO:int
+
+class PatientMedicalRecord(BaseModel):
+    CMND: str
+    HOTEN: str
+    GIOITINH: str="Nữ"
+    NGAYSINH: int
+    DIACHI: str
+    DOITUONG: str
+    SODIENTHOAI: str
+    EMAIL: str
+    HINHANH: str
+    medicalrecords:List[MedicalRecordModel]
+    class Config:
+        orm_mode = True

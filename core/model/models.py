@@ -47,7 +47,7 @@ class PatientModel(Base):
     EMAIL = Column(String)
     DOITUONG = Column(String)
     account = relationship("PatientLoginModel", uselist=False)
-
+    medicalrecords = relationship("MedicalRecordModel")
 
 class PatientLoginModel(Base):
     __tablename__ = 'USERBENHNHAN'

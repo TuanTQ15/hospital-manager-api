@@ -1,6 +1,6 @@
 from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
-from core.model.models import MedicalRecordModel
+from core.model.models import MedicalRecordModel,PatientModel
 from ..utility import dateconverter
 
 
@@ -28,11 +28,13 @@ def get_medical_record(db: Session,CMND):
     return medicalrecords
 
 def get_all(db:Session):
-    medicalrecords = db.query(MedicalRecordModel).all()
-    if not medicalrecords:
+    patients = db.query(PatientModel).all()
+    if not patients:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Không tìm thấy")
-    for medicalrecord in medicalrecords:
-        medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
-        for medialhistory in medicalrecord.medicalhistorys:
-            medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
-    return medicalrecords
+    for patient in patients:
+        patient.NGAYSINH = dateconverter.convertDateTimeToLong(str(patient.NGAYSINH))
+        for medicalrecord in patient.medicalrecords:
+            medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
+            for medialhistory in medicalrecord.medicalhistorys:
+                medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
+    return patients
