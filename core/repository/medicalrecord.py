@@ -45,6 +45,8 @@ def get_all(db:Session):
                     medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
                 except:
                     medialhistory.NGAYKHAM = 0
+            for service in medicalrecord.services:
+                service.NGAY = dateconverter.convertDateTimeToLong(str(service.NGAY))
     return patients
 
 def get_detailservice(db:Session):

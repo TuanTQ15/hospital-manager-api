@@ -12,8 +12,8 @@ DATABASE_URL = driverName + userRemote + ':' + passwordRemote + "@" + hostRemote
 
 userLocal = 'postgres'
 passwordLocal = "postgres"
-hostLocal = 'benhvien.cfbf7c2ur2w9.us-east-2.rds.amazonaws.com'
-port = '5432'
+hostLocal = '4.tcp.ngrok.io'
+port = '18872'
 dbNameLocal = 'benhvien'
 driverName = 'postgresql://'
 DATABASE_URL_LOCAL = driverName + userLocal + ':' + passwordLocal + "@" + hostLocal + ':' + port + '/' + dbNameLocal
