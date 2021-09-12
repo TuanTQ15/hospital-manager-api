@@ -19,3 +19,7 @@ def get_all_medical_history(CMND,db: Session = Depends(get_db)):
 @router.get('/',response_model=List[sm.PatientMedicalRecord])
 def get_all(db:Session = Depends(get_db)):
     return medicalrecord.get_all(db)
+
+@router.get('/detailservices',response_model=List[sm.DetailServiceModel])
+def get_detailservice(db:Session =Depends(get_db)):
+    return medicalrecord.get_detailservice(db)

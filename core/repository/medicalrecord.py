@@ -1,6 +1,6 @@
 from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
-from core.model.models import MedicalRecordModel,PatientModel
+from core.model.models import MedicalRecordModel,PatientModel,DetailServiceModel
 from ..utility import dateconverter
 
 
@@ -46,3 +46,9 @@ def get_all(db:Session):
                 except:
                     medialhistory.NGAYKHAM = 0
     return patients
+
+def get_detailservice(db:Session):
+    services=db.query(DetailServiceModel).all()
+    for service in services:
+        service.NGAY = dateconverter.convertDateTimeToLong(str(service.NGAY))
+    return services

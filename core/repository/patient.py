@@ -1,7 +1,7 @@
 from core.schema.schemas import  Patient,PatientLogin,ChangePassword
 from fastapi import  status, HTTPException
 from sqlalchemy.orm import Session
-from core.model.models import PatientModel,PatientLoginModel
+from core.model.models import PatientModel,PatientLoginModel,DetailServiceModel
 from core.utility import hashing,uploadImage,dateconverter
 from datetime import datetime
 from ..utility.hashing import Hash
@@ -100,3 +100,4 @@ def change_password(request:ChangePassword,db:Session):
     db.commit()
     db.refresh(userlogin)
     return "true"
+
