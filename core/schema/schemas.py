@@ -169,7 +169,7 @@ class DetailArrangeRomBedModel(BaseModel):
         orm_mode = True
 
 class DetailServiceModel(BaseModel):
-    NGAY:datetime.datetime
+    NGAY:int
     MABA:str
     MADV:str
     KETQUA:str=None

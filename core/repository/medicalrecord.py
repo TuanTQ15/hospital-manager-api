@@ -14,6 +14,8 @@ def get_all_medical_record(db: Session,CMND):
         medicalrecord.NGAYLAP = dateconverter.convertDateTimeToLong(str(medicalrecord.NGAYLAP))
         for medialhistory in medicalrecord.medicalhistorys:
             medialhistory.NGAYKHAM = dateconverter.convertDateTimeToLong(str(medialhistory.NGAYKHAM))
+        for service in medicalrecord.services:
+            service.NGAY = dateconverter.convertDateTimeToLong(str(service.NGAY))
     return medicalrecords
 
 def get_medical_record(db: Session,CMND):
