@@ -201,7 +201,8 @@ class MedicalRecordModel(BaseModel):
     TIENSU: str=None
     CANNANG :int
     CHIEUCAO:int
-    medicalhistorys: List[DetailExamination] =None
+    medicalhistorys: List[DetailExamination] =[]
+    services: List[DetailServiceModel] =[]
     class Config:
         orm_mode = True
 class MedicalRecordShow(BaseModel):
@@ -247,5 +248,12 @@ class PatientMedicalRecord(BaseModel):
     EMAIL: str
     HINHANH: str=None
     medicalrecords:List[MedicalRecordModel]=[]
+    class Config:
+        orm_mode = True
+
+class Service(BaseModel):
+    MADV: str
+    TENDV: str
+
     class Config:
         orm_mode = True
