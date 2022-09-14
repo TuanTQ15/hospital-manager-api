@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey,BigInteger,BOOLEAN
+from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey,BigInteger,BOOLEAN
 from sqlalchemy.dialects.postgresql import DATE
 from sqlalchemy.orm import relationship
 
@@ -14,8 +14,8 @@ class DepartmentModel(Base):
     TENKHOA = Column(String)
     SODT = Column(String)
     EMAIL = Column(String)
-    created_at = Column(DATETIME, default=now)
-    updated_at = Column(DATETIME)
+    created_at = Column(TIMESTAMP, default=now)
+    updated_at = Column(TIMESTAMP)
     employees = relationship("EmployeeModel", back_populates="department")
 
 
@@ -26,7 +26,7 @@ class EmployeeModel(Base):
     HOTEN = Column(String)
     GIOITINH = Column(String)
     DIACHI = Column(String)
-    NGAYSINH = Column(DATETIME)
+    NGAYSINH = Column(TIMESTAMP)
     HINHANH = Column(String)
     CHUCVU = Column(String)
     SODIENTHOAI = Column(String)
@@ -41,7 +41,7 @@ class PatientModel(Base):
     HOTEN = Column(String)
     DIACHI = Column(String)
     GIOITINH = Column(String)
-    NGAYSINH = Column(DATETIME)
+    NGAYSINH = Column(TIMESTAMP)
     HINHANH = Column(String)
     SODIENTHOAI = Column(String)
     EMAIL = Column(String)
@@ -72,7 +72,7 @@ class MedicalHistory(Base):
     MABA=Column(String,ForeignKey("BENHAN.MABA"),  nullable=False)
     MABS = Column(String,nullable=False)
     MAYTA =Column(String,nullable=True)
-    NGAYKHAM=Column(DATETIME,nullable=False)
+    NGAYKHAM=Column(TIMESTAMP,nullable=False)
     TINHTRANG=Column(String)
     CHANDOAN = Column(String)
     prescription = relationship("PrescriptionModel", uselist=False)
@@ -113,7 +113,7 @@ class MedicalRecordModel(Base):
     MABA = Column(String, primary_key=True, nullable=False)
     MANV =Column(String, ForeignKey(EmployeeModel.MANV),nullable=False)
     CMND = Column(String,ForeignKey(PatientModel.CMND),nullable=False)
-    NGAYLAP = Column(DATETIME, nullable=False)
+    NGAYLAP = Column(TIMESTAMP, nullable=False)
     TIENSU=Column(String,nullable=True)
     CANNANG = Column(Integer)
     CHIEUCAO=Column(Integer)
@@ -126,14 +126,14 @@ class DetailArrangeRoomBedModel(Base):
     __tablename__ = 'CHITIETXEPGIUONG'
     CTPHONGGIUONG_ID=Column(Integer, primary_key=True,nullable=False)
     MABA=Column(String,ForeignKey("BENHAN.MABA"),primary_key=True,nullable=False)
-    NGAYTHUE = Column(DATETIME)
-    NGAYTRA =Column(DATETIME)
+    NGAYTHUE = Column(TIMESTAMP)
+    NGAYTRA =Column(TIMESTAMP)
     DONGIA = Column (Integer)
     medicalhistory = relationship("MedicalRecordModel", back_populates="roombeds")
 
 class DetailServiceModel(Base):
     __tablename__ = 'CHITIETDICHVU'
-    NGAY=Column(DATETIME,primary_key=True,nullable=False)
+    NGAY=Column(TIMESTAMP,primary_key=True,nullable=False)
     MABA = Column(String,ForeignKey(MedicalRecordModel.MABA), primary_key=True, nullable=False)
     MADV = Column(String, primary_key=True, nullable=False)
     KETQUA=Column(String)
@@ -146,7 +146,7 @@ class DetailServiceModel(Base):
 class AdvancesModel(Base):
     __tablename__ = 'PHIEUTAMUNG'
     MAPTU = Column(String,primary_key=True,nullable=False)
-    NGAYLAP= Column(DATETIME)
+    NGAYLAP= Column(TIMESTAMP)
     SOTIEN = Column(Integer)
     LYDO=Column(String,nullable=True)
     GHICHU=Column(String,nullable=True)
@@ -184,7 +184,7 @@ class DetailRoomBedModel(Base):
 class ReceiptModel(Base):
     __tablename__ = 'HOADON'
     MAHD = Column(String, primary_key=True,nullable=False)
-    NGAYLAP =Column(DATETIME)
+    NGAYLAP =Column(TIMESTAMP)
     TONGTIEN=Column(Integer)
     GHICHU=Column(String)
     MANV=Column(String, ForeignKey(EmployeeModel.MANV))
