@@ -6,7 +6,7 @@ This is the source code of the API for the inpatient hospital's medical examinat
 - version 3.9.4
 ## Install
 
-    pip install -r requirement.txt
+    pip install -r requirements.txt
 
 ## Run the app
 
@@ -14,5 +14,5 @@ This is the source code of the API for the inpatient hospital's medical examinat
 
 
 # REST API Docs
-Using Swagger to generate docs for API at http://localhost:8000/
+Using Swagger to generate docs for API at http://localhost:8000/docs
 
